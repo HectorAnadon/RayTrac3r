@@ -16,7 +16,10 @@ public class Camera {
 		this.g = g;
 		this.up = up;
 		w = Util.divide(Util.inverse(g), Util.Norm(g));
-		System.out.println(w);
+		u = Util.divide(Util.vectorialProduct(up, w), 
+				Util.Norm(Util.vectorialProduct(up, w)));
+		v = Util.vectorialProduct(w, u);
+		System.out.println(w + "\n" + u +"\n"+ v);
 	}
 
 }
