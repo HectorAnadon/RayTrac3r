@@ -3,26 +3,22 @@ package scene;
 import javax.vecmath.*;
 
 public class Util {
-	/*public static Vector4d MultiplyMatrixAndVector(Matrix4d matrix, Vector4d vector) {
-		Vector4d result = new Vector4d();
-		double[] newValues = new double[4];
+	
+	public static Vector4d MultiplyVectorAndMatrix(Matrix4d matrix, Vector4d vector) {
+		double[] res = new double[4];
 		double[] oldValues = new double[4];
-		oldValues[0] = vector.getX();
-		oldValues[1] = vector.getY();
-		oldValues[2] = vector.getZ();
-		oldValues[3] = vector.getW();
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				newValues[i] += matrix.getElement(i, j) * oldValues[j];
+		oldValues[0] = vector.x;
+		oldValues[1] = vector.y;
+		oldValues[2] = vector.z;
+		oldValues[3] = vector.w;
+		
+		for (int i=0; i<4; i++) {
+			for (int j=0; j<4; j++) {
+				res[i] += matrix.getElement(j,i) * oldValues[j];
 			}
 		}
-
-		result.setX(newValues[0]);
-		result.setY(newValues[1]);
-		result.setZ(newValues[2]);
-		result.setW(newValues[3]);
-		return result;
-	}*/
+		return new Vector4d(res);
+	}
 
 	public static double Norm(Vector3d vector) {
 		return Math.sqrt(Math.pow(vector.x, 2.0) + Math.pow(vector.y, 2.0) + Math.pow(vector.z, 2.0));
@@ -35,14 +31,14 @@ public class Util {
 	 * 
 	 * @param v Vector a procesar.
 	 */
-	public static void cropVector(Vector3d v) {
+	/*public static void cropVector(Vector3d v) {
 		v.x = v.x > 1 ? 1 : v.x;
 		v.y = v.y > 1 ? 1 : v.y;
 		v.z = v.z > 1 ? 1 : v.z;
 		v.x = v.x < 0 ? 0 : v.x;
 		v.y = v.y < 0 ? 0 : v.y;
 		v.z = v.z < 0 ? 0 : v.z;
-	}
+	}*/
 
 	/**
 	 * Multiplica componente a componente dos vectores, dejando el resultado en el primer vector.
