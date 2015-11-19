@@ -11,7 +11,7 @@ public class Ray {
 	public Vector3d direction;
 
 	public Ray(Vector3d origin, Vector3d direction) {
-		super();
+		//super();
 		direction.normalize();
 		this.position = origin;
 		this.direction = direction;

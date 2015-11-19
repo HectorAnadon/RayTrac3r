@@ -1,6 +1,10 @@
 package scene;
 
+import java.util.Arrays;
+
 import javax.vecmath.*;
+
+import objects.Triangle;
 
 public class Util {
 	
@@ -68,11 +72,36 @@ public class Util {
 	}
 
 	/** @return Producto escalar entre dos Vector3d */
-	/*public static double dotProduct(Vector3d v1, Vector3d v2) {
+	public static double dotProduct(Vector3d v1, Vector3d v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; 
 	}
 	
-	public static double randomBetween(double min, double max) {
+	public static Vector3d substract(Point3d v1, Vector3d v2) {
+		return new Vector3d(v1.x-v2.x, 
+				v1.x-v2.x, v1.x-v2.x);
+	}
+	public static Vector3d substractPoints(Point3d v1, Point3d v2) {
+		return new Vector3d(v1.x-v2.x, 
+				v1.x-v2.x, v1.x-v2.x);
+	}
+	public static Vector3d add(Point3d v1, Vector3d v2) {
+		return new Vector3d(v1.x+v2.x, 
+				v1.x+v2.x, v1.x+v2.x);
+	}
+
+	public static boolean contains(Vector3d intersection, Triangle triangle) {
+		double[] x = {triangle.getP1().x, triangle.getP2().x, triangle.getP3().x};
+		Arrays.sort(x);
+		double[] y = {triangle.getP1().y, triangle.getP2().y, triangle.getP3().y};
+		Arrays.sort(y);
+		double[] z = {triangle.getP1().z, triangle.getP2().z, triangle.getP3().z};
+		Arrays.sort(z);
+		return (intersection.x >= x[0] && intersection.x <= x[2] &&
+				intersection.y >= y[0] && intersection.y <= y[2] &&
+				intersection.z >= z[0] && intersection.z <= z[2]);
+	}
+	
+	/*public static double randomBetween(double min, double max) {
 		return min + Math.random() * (max - min);
 	}*/
 }

@@ -41,11 +41,12 @@ public class Screen {
 
 	
 	
-	public static void main(String[] args) {
-		Camera cam = new Camera(new Point3d(1, 4, 0), new Vector3d(1, 0, 0), new Vector3d(-1, 1, 0));
+	/*public static void main(String[] args) {
+		Camera cam = new Camera(new Point3d(1, 4, 0), new Vector3d(1, 0, 0), 
+				new Vector3d(-1, 1, 0), new Vector3d(0,0,0));
 
 		Screen s = new Screen(cam, 4, 20, 20, 2, 2);
 		System.out.println("Res -> " + s.getWorldScreenCoordinates(5, -5));
-	}
+	}*/
 
 }
