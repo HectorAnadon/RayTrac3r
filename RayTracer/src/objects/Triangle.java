@@ -42,7 +42,7 @@ public class Triangle extends Shape{
 			if (Util.dotProduct(Util.substract(p1, ray.position),
 				n) == 0) {
 				//line contained in the tringle
-				//Todo: where?? I wouldn´t do this
+				//Todo: where?? I wouldnï¿½t do this
 				return ray;
 			} else {
 				return null;
@@ -57,7 +57,7 @@ public class Triangle extends Shape{
 					, ray.position);
 			//Check if intersects inside the triangle
 			if (Util.contains(intersection, this)) {
-				//Todo: modify direction of ray given reflexion and opacity
+				//Todo: modify direction of ray given reflexion, opacity and object normal
 				return new Ray(intersection, ray.direction);
 			} else {
 				return null;
