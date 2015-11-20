@@ -1,5 +1,7 @@
 package objects;
 
+import java.util.Arrays;
+
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -38,15 +40,7 @@ public class Triangle extends Shape{
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
 		if (Util.dotProduct(ray.direction, n) == 0) {
-			//System.out.println("No intersectionwith plane");
-			if (Util.dotProduct(Util.substract(p1, ray.position),
-				n) == 0) {
-				//line contained in the tringle
-				//Todo: where?? I wouldn�t do this
-				return ray;
-			} else {
-				return null;
-			}
+			return null;
 		} else {
 			if (Util.dotProduct(ray.direction, n) > 0) {
 				n = Util.inverse(n);
@@ -56,7 +50,7 @@ public class Triangle extends Shape{
 			Vector3d intersection = Util.add(new Vector3d(d*ray.direction.x, d*ray.direction.y, d*ray.direction.z)
 					, ray.position);
 			//Check if intersects inside the triangle
-			if (Util.contains(intersection, this)) {
+			if (contains(intersection, this)) {
 				//Todo: modify direction of ray given reflexion, opacity and object normal
 				return new Ray(intersection, ray.direction);
 			} else {
@@ -65,20 +59,20 @@ public class Triangle extends Shape{
 		}
 	}
 	
-	/*public Ray intersection (Ray ray) {
-		double dn = Util.dotProduct(ray.direction, n);
-		
-		if (dn == 0) {	// No intersection
-			return null;
-		}
-		else if (dn > 0) {	
-			
-		}
-		else {
-			
-		}
-			
-	}*/
+	private static boolean contains(Vector3d intersection, Triangle triangle) {
+		double[] x = {triangle.getP1().x, triangle.getP2().x, triangle.getP3().x};
+		Arrays.sort(x);
+		double[] y = {triangle.getP1().y, triangle.getP2().y, triangle.getP3().y};
+		Arrays.sort(y);
+		double[] z = {triangle.getP1().z, triangle.getP2().z, triangle.getP3().z};
+		Arrays.sort(z);
+		System.out.println((intersection.x >= x[0] && intersection.x <= x[2] &&
+				intersection.y >= y[0] && intersection.y <= y[2] &&
+				intersection.z >= z[0] && intersection.z <= z[2]));
+		return (intersection.x >= x[0] && intersection.x <= x[2] &&
+				intersection.y >= y[0] && intersection.y <= y[2] &&
+				intersection.z >= z[0] && intersection.z <= z[2]);
+	}
 	
 	public Vector3d getP1() {
 		return p1;
