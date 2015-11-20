@@ -8,6 +8,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4d;
 
+import objects.Plane;
 import objects.Shape;
 import objects.Triangle;
 
@@ -22,12 +23,14 @@ public class Scene {
 	
 	
 	public static void main (String[] args) {
-		Camera c = new Camera(new Vector3d(0,0,7), new Vector3d(0, 0 , 2), 
+		Camera c = new Camera(new Vector3d(0,0,30), new Vector3d(0, 0 , 2), 
 				new Vector3d(0,1,1), new Vector3d(0,0,0));
 		
-		Screen s = new Screen(c, -1, numPixelX, numPixelY, 20, 20);
+		Screen s = new Screen(c, 20, numPixelX, numPixelY, 20, 20);
 
+		objects.add(new Plane(new Vector3d(0,0,0), new Vector3d(0,0,1), 1.0));
 		objects.add(new Triangle(new Vector3d(-1,0,5), new Vector3d(0,1,5), new Vector3d(1,0,5), 1.0));
+		objects.add(new Triangle(new Vector3d(-2,0,5), new Vector3d(-2,1,5), new Vector3d(-1,0,5), 1.0));
 		
 		
 		for (int i=-numPixelX/2; i<numPixelX/2; i++) {
@@ -48,10 +51,10 @@ public class Scene {
 							image.setRGB(i+numPixelX/2,j+numPixelY/2, obj.getColor().getRGB());
 							
 						}
-						else {
+						/*else {
 							//System.out.println("No intersecta");
 							image.setRGB(i+numPixelX/2,j+numPixelY/2, Color.black.getRGB());
-						}
+						}*/
 						
 					}
 					

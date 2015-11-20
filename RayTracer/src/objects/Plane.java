@@ -1,5 +1,7 @@
 package objects;
 
+import java.awt.Color;
+
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -12,11 +14,17 @@ public class Plane extends Shape{
 	
 	private Vector3d p1;
 	private Vector3d n;
+	private static int r;
+	private static int g;
+	private static int b;
 	
 	public Plane(Vector3d p1, Vector3d n, double opaque) {
 		this.p1 = p1;
 		this.n = n;
 		this.opaque = opaque;
+		g = 200;
+		r = 0;
+		b = 0;
 	}
 	
 	public void transformation (Matrix4d trans) {
@@ -46,5 +54,9 @@ public class Plane extends Shape{
 			//Todo: modify direction of ray given reflexion and opacity
 			return new Ray(intersection, ray.direction);
 		}
+	}
+	
+	public Color getColor() {
+		return new Color(r,g,b);
 	}
 }

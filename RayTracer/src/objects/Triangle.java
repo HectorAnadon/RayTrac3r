@@ -1,5 +1,6 @@
 package objects;
 
+import java.awt.Color;
 import java.util.Arrays;
 
 import javax.vecmath.Matrix4d;
@@ -16,13 +17,20 @@ public class Triangle extends Shape{
 	private Vector3d p2;
 	private Vector3d p3;
 	private Vector3d n;
+	private static int r;
+	private static int g;
+	private static int b;
 	
 	public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, double opaque) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.p3 = p3;
 		this.opaque = opaque;
+		r = 255;
+		g = 59;
+		b = 0;
 		n = Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1));
+		System.out.println("normal " +n);
 	}
 	
 	public void transformation (Matrix4d trans) {
@@ -39,14 +47,18 @@ public class Triangle extends Shape{
 	
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
-		if (Util.dotProduct(ray.direction, n) == 0) {
+		double dn = Util.dotProduct(ray.direction, n);
+		if (dn == 0) {
 			return null;
 		} else {
-			if (Util.dotProduct(ray.direction, n) > 0) {
+			if (dn < 0) {
 				n = Util.inverse(n);
-			}		
+			}
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
-					n)/Util.dotProduct(ray.direction, n);
+					n)/dn;
+			if (dn < 0 && d < 0) {
+				return null;
+			}
 			Vector3d intersection = ray.getPoint(d);
 			
 			//Check if intersects inside the triangle
@@ -81,5 +93,9 @@ public class Triangle extends Shape{
 	}
 	public Vector3d getP3() {
 		return p3;
+	}
+	
+	public Color getColor() {
+		return new Color(r,g,b);
 	}
 }
