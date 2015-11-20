@@ -38,6 +38,7 @@ public class Triangle extends Shape{
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
 		if (Util.dotProduct(ray.direction, n) == 0) {
+			//System.out.println("No intersectionwith plane");
 			if (Util.dotProduct(Util.substract(p1, ray.position),
 				n) == 0) {
 				//line contained in the tringle
@@ -63,6 +64,21 @@ public class Triangle extends Shape{
 			}
 		}
 	}
+	
+	/*public Ray intersection (Ray ray) {
+		double dn = Util.dotProduct(ray.direction, n);
+		
+		if (dn == 0) {	// No intersection
+			return null;
+		}
+		else if (dn > 0) {	
+			
+		}
+		else {
+			
+		}
+			
+	}*/
 	
 	public Vector3d getP1() {
 		return p1;
