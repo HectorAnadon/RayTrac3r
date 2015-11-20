@@ -1,5 +1,7 @@
 package scene;
 
+import java.util.ArrayList;
+
 import javax.vecmath.*;
 
 public class Screen {
@@ -31,12 +33,14 @@ public class Screen {
 	/**
 	 * Gets the world coordinates from the pixel position in the screen
 	 */
-	public static Vector4d getWorldScreenCoordinates(int x, int y) {
+	public static ArrayList<Vector4d> getWorldScreenCoordinates(int x, int y) {
 		Vector3d Pc = new Vector3d(x, y, -distance);
 		Util.multiplyVectors(Pc, new Vector3d(Au, Av, 1));
 
 		Vector4d Pw = new Vector4d(Pc.x, Pc.y, Pc.z, 1);
-		return Util.MultiplyVectorAndMatrix(M, Pw);
+		ArrayList<Vector4d> points = new ArrayList<Vector4d>();
+		points.add(Util.MultiplyVectorAndMatrix(M, Pw));
+		return points;
 	}
 
 	
