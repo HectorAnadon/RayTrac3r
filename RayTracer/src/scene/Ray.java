@@ -22,4 +22,9 @@ public class Ray {
 	public String toString() {
 		return "position: " + position + ", direction: " + direction;
 	}
+	
+	
+	public Vector3d getPoint(double lambda) {
+		return Util.add(position, Util.dotScalar(direction, lambda));
+	}
 }
