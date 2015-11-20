@@ -76,15 +76,12 @@ public class Util {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; 
 	}
 	
-	public static Vector3d substract(Point3d v1, Vector3d v2) {
+	public static Vector3d substract(Vector3d v1, Vector3d v2) {
 		return new Vector3d(v1.x-v2.x, 
 				v1.x-v2.x, v1.x-v2.x);
 	}
-	public static Vector3d substractPoints(Point3d v1, Point3d v2) {
-		return new Vector3d(v1.x-v2.x, 
-				v1.x-v2.x, v1.x-v2.x);
-	}
-	public static Vector3d add(Point3d v1, Vector3d v2) {
+	
+	public static Vector3d add(Vector3d v1, Vector3d v2) {
 		return new Vector3d(v1.x+v2.x, 
 				v1.x+v2.x, v1.x+v2.x);
 	}

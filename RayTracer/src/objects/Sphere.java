@@ -10,10 +10,10 @@ import scene.Util;
 
 public class Sphere extends Shape{
 	
-	private Point3d p1;
+	private Vector3d p1;
 	private double r;
 	
-	public Sphere(Point3d p1, double r, double opaque) {
+	public Sphere(Vector3d p1, double r, double opaque) {
 		this.p1 = p1;
 		this.r = r;
 		this.opaque = opaque;
@@ -22,7 +22,7 @@ public class Sphere extends Shape{
 	public void transformation (Matrix4d trans) {
 		Vector4d p1Prov = new Vector4d(p1.x, p1.y, p1.z, 1);
 		p1Prov = Util.MultiplyVectorAndMatrix(trans, p1Prov);
-		p1 = new Point3d(p1Prov.x/p1Prov.w, p1Prov.y/p1Prov.w, p1Prov.z/p1Prov.w);
+		p1 = new Vector3d(p1Prov.x/p1Prov.w, p1Prov.y/p1Prov.w, p1Prov.z/p1Prov.w);
 		//modify r?
 	}
 	
