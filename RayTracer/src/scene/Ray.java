@@ -14,8 +14,8 @@ public class Ray {
 		//super();
 		direction.normalize();
 		this.position = origin;
-		this.direction = Util.substract(direction, origin);
-		//this.direction = direction;
+		//this.direction = Util.substract(direction, origin);
+		this.direction = direction;
 	}
 
 	@Override

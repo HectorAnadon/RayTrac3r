@@ -47,10 +47,10 @@ public class Triangle extends Shape{
 			}		
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
 					n)/Util.dotProduct(ray.direction, n);
-			Vector3d intersection = Util.add(new Vector3d(d*ray.direction.x, d*ray.direction.y, d*ray.direction.z)
-					, ray.position);
+			Vector3d intersection = ray.getPoint(d);
+			
 			//Check if intersects inside the triangle
-			if (contains(intersection, this)) {
+			if (contains(intersection)) {
 				//Todo: modify direction of ray given reflexion, opacity and object normal
 				return new Ray(intersection, ray.direction);
 			} else {
@@ -58,20 +58,19 @@ public class Triangle extends Shape{
 			}
 		}
 	}
+
+
+	public boolean contains(Vector3d intersection) {
+		double s1 = Util.dotProduct(Util.vectorialProduct(Util.substract(p2, p1), Util.substract(intersection, p1)), n);
+		double s2 = Util.dotProduct(Util.vectorialProduct(Util.substract(p3, p2), Util.substract(intersection, p2)), n);
+		double s3 = Util.dotProduct(Util.vectorialProduct(Util.substract(p1, p3), Util.substract(intersection, p3)), n);
 	
-	private static boolean contains(Vector3d intersection, Triangle triangle) {
-		double[] x = {triangle.getP1().x, triangle.getP2().x, triangle.getP3().x};
-		Arrays.sort(x);
-		double[] y = {triangle.getP1().y, triangle.getP2().y, triangle.getP3().y};
-		Arrays.sort(y);
-		double[] z = {triangle.getP1().z, triangle.getP2().z, triangle.getP3().z};
-		Arrays.sort(z);
-		System.out.println((intersection.x >= x[0] && intersection.x <= x[2] &&
-				intersection.y >= y[0] && intersection.y <= y[2] &&
-				intersection.z >= z[0] && intersection.z <= z[2]));
-		return (intersection.x >= x[0] && intersection.x <= x[2] &&
-				intersection.y >= y[0] && intersection.y <= y[2] &&
-				intersection.z >= z[0] && intersection.z <= z[2]);
+		if ((s1>0 && s2>0 && s3>0) || (s1<0 && s2<0 && s3<0)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public Vector3d getP1() {

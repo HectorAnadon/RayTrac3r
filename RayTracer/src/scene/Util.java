@@ -78,15 +78,19 @@ public class Util {
 	
 	public static Vector3d substract(Vector3d v1, Vector3d v2) {
 		return new Vector3d(v1.x-v2.x, 
-				v1.x-v2.x, v1.x-v2.x);
+				v1.y-v2.y, v1.z-v2.z);
 	}
 	
 	public static Vector3d add(Vector3d v1, Vector3d v2) {
 		return new Vector3d(v1.x+v2.x, 
-				v1.x+v2.x, v1.x+v2.x);
+				v1.y+v2.y, v1.z+v2.z);
+	}
+	
+	public static Vector3d dotScalar(Vector3d v1, double d) {
+		return new Vector3d(v1.x*d, 
+				v1.y*d, v1.z*d);
 	}
 
-	
 	/*public static double randomBetween(double min, double max) {
 		return min + Math.random() * (max - min);
 	}*/
