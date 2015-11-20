@@ -24,6 +24,7 @@ public class Screen {
 
 		Au = width / (numCol - 1);
 		Av = height / (numRow - 1);
+		
 
 		double[] m = { c.getU().x, c.getU().y, c.getU().z, 0, c.getV().x, c.getV().y, c.getV().z, 0, c.getW().x,
 				c.getW().y, c.getW().z, 0, c.getEw().x, c.getEw().y, c.getEw().z, 1 };
@@ -34,12 +35,16 @@ public class Screen {
 	 * Gets the world coordinates from the pixel position in the screen
 	 */
 	public static ArrayList<Vector4d> getWorldScreenCoordinates(int x, int y) {
+		//System.out.println("(" + x + "," + y + ")");
 		Vector3d Pc = new Vector3d(x, y, -distance);
 		Util.multiplyVectors(Pc, new Vector3d(Au, Av, 1));
+		//System.out.println("Pc   " + Pc);
 
 		Vector4d Pw = new Vector4d(Pc.x, Pc.y, Pc.z, 1);
 		ArrayList<Vector4d> points = new ArrayList<Vector4d>();
+		//System.out.println(M);
 		points.add(Util.MultiplyVectorAndMatrix(M, Pw));
+		//System.out.println("Pw   " + Util.MultiplyVectorAndMatrix(M, Pw));
 		return points;
 	}
 

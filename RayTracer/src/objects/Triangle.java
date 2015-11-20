@@ -38,12 +38,12 @@ public class Triangle extends Shape{
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
 		if (Util.dotProduct(ray.direction, n) == 0) {
-			//System.out.println("No intersectionwith plane");
+			System.out.println("No intersection with plane");
 			if (Util.dotProduct(Util.substract(p1, ray.position),
 				n) == 0) {
 				//line contained in the tringle
 				//Todo: where?? I wouldn�t do this
-				return ray;
+				return null;
 			} else {
 				return null;
 			}
@@ -53,10 +53,10 @@ public class Triangle extends Shape{
 			}		
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
 					n)/Util.dotProduct(ray.direction, n);
-			Vector3d intersection = Util.add(new Vector3d(d*ray.direction.x, d*ray.direction.y, d*ray.direction.z)
-					, ray.position);
+			Vector3d intersection = ray.getPoint(d);
+			
 			//Check if intersects inside the triangle
-			if (Util.contains(intersection, this)) {
+			if (contains(intersection)) {
 				//Todo: modify direction of ray given reflexion, opacity and object normal
 				return new Ray(intersection, ray.direction);
 			} else {
@@ -64,21 +64,20 @@ public class Triangle extends Shape{
 			}
 		}
 	}
+
+
+	public boolean contains(Vector3d intersection) {
+		double s1 = Util.dotProduct(Util.vectorialProduct(Util.substract(p2, p1), Util.substract(intersection, p1)), n);
+		double s2 = Util.dotProduct(Util.vectorialProduct(Util.substract(p3, p2), Util.substract(intersection, p2)), n);
+		double s3 = Util.dotProduct(Util.vectorialProduct(Util.substract(p1, p3), Util.substract(intersection, p3)), n);
 	
-	/*public Ray intersection (Ray ray) {
-		double dn = Util.dotProduct(ray.direction, n);
-		
-		if (dn == 0) {	// No intersection
-			return null;
-		}
-		else if (dn > 0) {	
-			
+		if ((s1>0 && s2>0 && s3>0) || (s1<0 && s2<0 && s3<0)) {
+			return true;
 		}
 		else {
-			
+			return false;
 		}
-			
-	}*/
+	}
 	
 	public Vector3d getP1() {
 		return p1;

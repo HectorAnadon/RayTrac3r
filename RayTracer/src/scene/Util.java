@@ -78,26 +78,19 @@ public class Util {
 	
 	public static Vector3d substract(Vector3d v1, Vector3d v2) {
 		return new Vector3d(v1.x-v2.x, 
-				v1.x-v2.x, v1.x-v2.x);
+				v1.y-v2.y, v1.z-v2.z);
 	}
 	
 	public static Vector3d add(Vector3d v1, Vector3d v2) {
 		return new Vector3d(v1.x+v2.x, 
-				v1.x+v2.x, v1.x+v2.x);
-	}
-
-	public static boolean contains(Vector3d intersection, Triangle triangle) {
-		double[] x = {triangle.getP1().x, triangle.getP2().x, triangle.getP3().x};
-		Arrays.sort(x);
-		double[] y = {triangle.getP1().y, triangle.getP2().y, triangle.getP3().y};
-		Arrays.sort(y);
-		double[] z = {triangle.getP1().z, triangle.getP2().z, triangle.getP3().z};
-		Arrays.sort(z);
-		return (intersection.x >= x[0] && intersection.x <= x[2] &&
-				intersection.y >= y[0] && intersection.y <= y[2] &&
-				intersection.z >= z[0] && intersection.z <= z[2]);
+				v1.y+v2.y, v1.z+v2.z);
 	}
 	
+	public static Vector3d dotScalar(Vector3d v1, double d) {
+		return new Vector3d(v1.x*d, 
+				v1.y*d, v1.z*d);
+	}
+
 	/*public static double randomBetween(double min, double max) {
 		return min + Math.random() * (max - min);
 	}*/
