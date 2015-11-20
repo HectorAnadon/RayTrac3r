@@ -12,10 +12,13 @@ public class Ray {
 
 	public Ray(Vector3d origin, Vector3d direction) {
 		//super();
-		direction.normalize();
+		//direction.normalize();
 		this.position = origin;
-		//this.direction = Util.substract(direction, origin);
-		this.direction = direction;
+		//System.out.println("P1 -> " + direction);
+		//System.out.println("P0 -> " + origin);
+		
+		this.direction = Util.substract(direction, origin);
+		//this.direction = direction;
 	}
 
 	@Override

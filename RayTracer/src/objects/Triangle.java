@@ -51,9 +51,12 @@ public class Triangle extends Shape{
 		if (dn == 0) {
 			return null;
 		} else {
-			if (dn < 0) {
+			if (dn > 0) {
 				n = Util.inverse(n);
+				System.out.println("aaaa");
+				dn = Util.dotProduct(ray.direction, n);
 			}
+			
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
 					n)/dn;
 			if (dn < 0 && d < 0) {

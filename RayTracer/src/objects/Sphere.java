@@ -12,14 +12,14 @@ import scene.Util;
 
 public class Sphere extends Shape{
 	
-	private Vector3d p1;
+	private Vector3d c;
 	private double r;
 	private static int red;
 	private static int g;
 	private static int b;
 	
-	public Sphere(Vector3d p1, double r, double opaque) {
-		this.p1 = p1;
+	public Sphere(Vector3d c, double r, double opaque) {
+		this.c = c;
 		this.r = r;
 		this.opaque = opaque;
 		red = 255;
@@ -28,16 +28,64 @@ public class Sphere extends Shape{
 	}
 	
 	public void transformation (Matrix4d trans) {
-		Vector4d p1Prov = new Vector4d(p1.x, p1.y, p1.z, 1);
+		Vector4d p1Prov = new Vector4d(c.x, c.y, c.z, 1);
 		p1Prov = Util.MultiplyVectorAndMatrix(trans, p1Prov);
-		p1 = new Vector3d(p1Prov.x/p1Prov.w, p1Prov.y/p1Prov.w, p1Prov.z/p1Prov.w);
+		c = new Vector3d(p1Prov.x/p1Prov.w, p1Prov.y/p1Prov.w, p1Prov.z/p1Prov.w);
 		//modify r?
 	}
 	
 	//Returns the reflected ray or null if does not intersect
-	public Ray intersection (Ray vector) {
-		//Todo:
-		return null;
+	public Ray intersection (Ray ray) {
+		
+		double A = Util.dotProduct(ray.direction, ray.direction);
+		double B = Util.dotProduct(Util.substract(ray.position, c), ray.direction);
+		double C = Util.dotProduct(Util.substract(ray.position, c), Util.substract(ray.position, c)) - r;
+		
+		double D = B*B - A*C;
+
+		/*System.out.println("A  " + A);
+		System.out.println("B  " + B);
+		System.out.println("C  " + C);
+		System.out.println("D  " + C);*/
+		
+		if (D < 0) {		// No intersection
+			return null;
+		}
+		else if (D == 0) {	// One intersection
+			return ray;
+		}
+		else {				// Two intersections
+			
+			
+			double lambda1 = (-2*B + Math.sqrt(4*B*B - 4*A*C))/(2*A);
+			double lambda2 = (-2*B - Math.sqrt(4*B*B - 4*A*C))/(2*A);
+			
+			//System.out.println("Lambdas:   " + lambda1 + "  " + lambda2);
+			
+			Vector3d pixel1 = ray.getPoint(lambda1);
+			Vector3d pixel2 = ray.getPoint(lambda2);
+			
+			//System.out.println("Esfera1 -> " + pixel1);
+			//System.out.println("Esfera2 -> " + pixel2);
+			
+			if (lambda1 < 0 && lambda2 < 0) {	// Out of view
+				return null;
+			}
+			else if (lambda1 > 0 && lambda2 < 0) {	// Return lambda1
+				return ray;
+			} 
+			else if (lambda1 > lambda2 && lambda2 > 0) {	// Return lambda2
+				return ray;
+			} 
+			else if (lambda1 < 0 && lambda2 > 0) {	// Return lambda2
+				return ray;
+			} 
+			else {							// Return lambda1
+				return ray;
+			}
+			
+		}
+		
 	}
 	
 	public Color getColor() {
