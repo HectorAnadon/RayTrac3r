@@ -117,11 +117,12 @@ public class Sphere extends Shape{
 		
 	}
 	
-	public Color getColor(double i, Ray l ,Ray r, Ray v) {
-		Vector3d n = Util.substract(l.position, c);
-		Double cos = Math.pow(Util.dotProduct(r.direction, v.direction)/
-				(Util.Norm(r.direction)*Util.Norm(v.direction)), Util.Norm(n));
+	public Color getColor(double i, Ray rLight, Ray vision) {
+		int n = 100;
+		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/
+				(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
 		if (cos > 0) {
+			//System.out.println((cos*i*ks*red)+" "+ (cos*i*ks*g)+" "+(cos*i*ks*b));
 			return new Color((int) (cos*i*ks*red),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
 		} else {
 			return new Color(0,0,0);

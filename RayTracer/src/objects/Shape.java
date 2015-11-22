@@ -21,4 +21,6 @@ public abstract class Shape {
 	public abstract Color getColor(double i);
 	
 	public abstract Color getColor(double i, Ray l);
+	
+	public abstract Color getColor(double i, Ray rLight, Ray vision);
 }

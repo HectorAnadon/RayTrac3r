@@ -74,4 +74,16 @@ public class Plane extends Shape{
 			return new Color(0,0,0);
 		}
 	}
+	
+	public Color getColor(double i, Ray rLight, Ray vision) {
+		int n = 100;
+		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/
+				(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
+		if (cos > 0) {
+			return new Color((int) (cos*i*ks*r),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
+		} else {
+			return new Color(0,0,0);
+		}
+		
+	}
 }
