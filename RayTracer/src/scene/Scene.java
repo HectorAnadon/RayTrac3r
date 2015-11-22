@@ -32,7 +32,7 @@ public class Scene {
 				new Vector3d(0,1,1), new Vector3d(0,0,0));
 		
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
-		Light light = new Light(new Vector3d(-10,0,0), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(-10,0,5), new Vector3d(2, 0 , 0));
 		Light[] lights = {light};
 		
 		double distanceScreen = -3;

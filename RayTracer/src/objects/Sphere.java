@@ -75,26 +75,31 @@ public class Sphere extends Shape{
 			}
 			else if (lambda1 > 0 && lambda2 < 0) {	// Return lambda1
 				Vector3d intersection = ray.getPoint(lambda1);
-				System.out.println(intersection);
-				return ray;
+				return new Ray(intersection, direction(ray, intersection));
 			} 
 			else if (lambda1 > lambda2 && lambda2 > 0) {	// Return lambda2
 				Vector3d intersection = ray.getPoint(lambda2);
-				return new Ray(intersection, ray.direction);
+				return new Ray(intersection, direction(ray, intersection));
 			} 
 			else if (lambda1 < 0 && lambda2 > 0) {	// Return lambda2
 				Vector3d intersection = ray.getPoint(lambda2);
-				return new Ray(intersection, ray.direction);
+				return new Ray(intersection, direction(ray, intersection));
 			} 
 			else {							// Return lambda1
 				Vector3d intersection = ray.getPoint(lambda1);
-				return new Ray(intersection, ray.direction);
+				return new Ray(intersection, direction(ray, intersection));
 			}
 			
 		}
 		
 	}
 	
+	private Vector3d direction(Ray ray, Vector3d intersection) {
+		Vector3d n = Util.substract(intersection, c);
+		double escalar = 2*Util.dotProduct(ray.direction, n);
+		return Util.substract(ray.direction, Util.dotScalar(n, escalar));
+	}
+
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*red),(int) (i*kd*g),(int) (i*kd*b));
 	}
