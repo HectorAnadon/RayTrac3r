@@ -17,6 +17,7 @@ public class Camera {
 	public Camera(Vector3d ew, Vector3d g, Vector3d up, Vector3d d) {
 		this.d = d;
 		this.ew = ew;
+		//this.g = Util.substract(ew, g);;
 		this.g = g;
 		this.up = up;
 		w = Util.divide(Util.inverse(g), Util.Norm(g));

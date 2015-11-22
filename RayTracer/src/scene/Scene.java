@@ -19,7 +19,7 @@ public class Scene {
 	
 	private static final int numPixelX = 500;
 	private static final int numPixelY = 500;
-	private static double ambientalLightI = 0.3;
+	private static double ambientalLightI = 0.1;
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -29,11 +29,12 @@ public class Scene {
 		//Camera c = new Camera(new Vector3d(1,4,0), new Vector3d(1,0,0), new Vector3d(-1,1,0), new Vector3d(4,0,0));
 		//Screen s = new Screen(c, 4, numPixelX, numPixelY, 10, 10);
 		
-		Vector3d ew = new Vector3d(0,0,10);
-		Camera c = new Camera(ew, new Vector3d(0, 0 , 2), 
+		Vector3d ew = new Vector3d(-5,0,10);
+		Camera c = new Camera(ew, new Vector3d(-1, 0 , 2), 
 				new Vector3d(0,1,1), new Vector3d(0,0,0));
 		
-		Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
+		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
+		Light light = new Light(new Vector3d(-10,0,0), new Vector3d(2, 0 , 0));
 		Light[] lights = {light};
 		
 		double distanceScreen = -3;
@@ -42,15 +43,18 @@ public class Scene {
 
 
 		
-		System.out.println("Triangle distance: " + 5 + "\n\n");
-		objects.add(new Plane(new Vector3d(0,0,0), new Vector3d(15,0,0), 1.0));
+		/*System.out.println("Triangle distance: " + 5 + "\n\n");
+		
 		objects.add(new Triangle(new Vector3d(-1,0,5), new Vector3d(0,1,5), new Vector3d(1,0,5), 1.0));
 		objects.add(new Triangle(new Vector3d(-5,0,5), new Vector3d(-2,1,5), new Vector3d(-1,0,5), 1.0));
 		//System.out.println("Sphere distance: " + 4 + "\n\n");
-		objects.add(new Sphere(new Vector3d(0,3,5), 1, 1));
+		objects.add(new Sphere(new Vector3d(0,3,5), 1, 1));*/
+		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(15,0,-20), 1.0));
+		objects.add(new Sphere(new Vector3d(-3,0,5), 3, 1));
+		objects.add(new Sphere(new Vector3d(-7,0,5), 0.4, 1));
 
 		
-		for (int i=-numPixelX/2; i<numPixelX/2; i++) {
+		for (int i=numPixelY/2; i>(-numPixelY/2); i--) {
 			for (int j=numPixelY/2; j>(-numPixelY/2); j--) {
 				ArrayList<Vector4d> points = s.getWorldScreenCoordinates(i, j);
 				for (Vector4d v:points) {	// Intersect ray with each objects
@@ -64,43 +68,45 @@ public class Scene {
 						Ray rReflected = obj.intersection(r);
 						
 						if (rReflected != null) {
-							/*double distance = Util.distance(ew, rReflected.position);
+							double distance = Util.distance(ew, rReflected.position);
 							 if (distance < minDistance) {
-							 object = obj;
-							 minDistance = distance; // update min distance
-							 }*/
+								 object = obj;
+								 minDistance = distance; // update min distance
+							 }
 							//System.out.println(i + "  -  " + j);
 							// TO DO:
 								// 1. Calculate intersection between light and intersection point
 								// 2. Calculate intersection between other objects with the reflected ray
-						//}end if for ditance
-					//}end for for distance
+						}
+					}
 							
 							
-							//Only for one object:
-							//if (object != null) {
-							//get ambiental light
-							Color imgColor = obj.getColor(ambientalLightI);
-							for (Light l:lights) {
-								Ray rLight = new Ray(rReflected.position, l.getPosition());
-								boolean intersects = false;
-								//TODO fix distance for shadow
-								/*for (Shape obj2:objects) {
+					//Only for one object:
+					if (object != null) {
+						Ray rReflected = object.intersection(r);
+						//get ambiental light
+						Color imgColor = object.getColor(ambientalLightI);
+						for (Light l:lights) {
+							Ray rLight = new Ray(rReflected.position, l.getPosition());
+							boolean intersects = false;
+							//TODO fix distance for shadow
+							for (Shape obj2:objects) {
+								if (!obj2.equals(object)){
 									Ray rReflected2 = obj2.intersection(rLight);
-									if (rReflected2 != null) {
-										System.out.println(obj + " " +obj2);
+									if (rReflected2 != null && Util.distance(rReflected2.position, l.getPosition())< Util.distance(rReflected.position, l.getPosition())) {
+										System.out.println(object + " " +obj2);
 										intersects = true;
 									}
-								}*/
-								if(!intersects) {
-									Color provColor = obj.getColor(l.getIntensity());
-									imgColor = normalizeColor(imgColor, provColor);
 								}
 							}
-							
-							image.setRGB(i+numPixelX/2,numPixelY/2-j, imgColor.getRGB());
-							
+							if(!intersects) {
+								Color provColor = object.getColor(l.getIntensity());
+								imgColor = normalizeColor(imgColor, provColor);
+							}
 						}
+						
+						image.setRGB(-i+numPixelX/2,numPixelY/2-j, imgColor.getRGB());
+							
 						
 					}
 					
