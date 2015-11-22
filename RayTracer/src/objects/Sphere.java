@@ -18,6 +18,7 @@ public class Sphere extends Shape{
 	private static int g;
 	private static int b;
 	private double kd = 0.7;
+	private double ks = 1;
 	
 	public Sphere(Vector3d c, double r, double opaque) {
 		this.c = c;
@@ -110,6 +111,18 @@ public class Sphere extends Shape{
 				(Util.Norm(l.direction)*Util.Norm(n));
 		if (cos > 0) {
 			return new Color((int) (cos*i*kd*red),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
+		} else {
+			return new Color(0,0,0);
+		}
+		
+	}
+	
+	public Color getColor(double i, Ray l ,Ray r, Ray v) {
+		Vector3d n = Util.substract(l.position, c);
+		Double cos = Math.pow(Util.dotProduct(r.direction, v.direction)/
+				(Util.Norm(r.direction)*Util.Norm(v.direction)), Util.Norm(n));
+		if (cos > 0) {
+			return new Color((int) (cos*i*ks*red),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
 		} else {
 			return new Color(0,0,0);
 		}
