@@ -33,6 +33,7 @@ public class Scene {
 		
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
 		Light light = new Light(new Vector3d(-10,0,5), new Vector3d(2, 0 , 0));
+		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		Light[] lights = {light};
 		
 		double distanceScreen = -3;
@@ -93,6 +94,7 @@ public class Scene {
 								if (!obj2.equals(object)){
 									//Ray from object in the middle
 									Ray rReflected2 = obj2.intersection(rLight);
+									//sometimes intersections it shouldnt
 									if (rReflected2 != null && 
 											Util.distance(rReflected2.position, l.getPosition())
 											< Util.distance(rReflected.position, l.getPosition())) {

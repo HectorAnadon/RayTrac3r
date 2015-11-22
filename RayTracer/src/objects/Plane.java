@@ -39,20 +39,21 @@ public class Plane extends Shape{
 	
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
-		if (Util.dotProduct(ray.direction, n) == 0) {
-			if (Util.dotProduct(Util.substract(p1, ray.position),
-				n) == 0) {
-				//line contained in the plane
-				return ray;
-			} else {
+		double dn = Util.dotProduct(ray.direction, n);
+		if (dn == 0) {
+			return null;
+		} else {
+			if (dn > 0) {
+				n = Util.inverse(n);
+				dn = Util.dotProduct(ray.direction, n);
+			}
+			
+			double d = Util.dotProduct(Util.substract(p1, ray.position),
+					n)/dn;
+			if (dn < 0 && d < 0) {
 				return null;
 			}
-		} else {
-			double d = Util.dotProduct(Util.substract(p1, ray.position),
-					n)/Util.dotProduct(ray.direction, n);
-			Vector3d intersection = Util.add(new Vector3d(d*ray.direction.x, d*ray.direction.y, d*ray.direction.z)
-					, ray.position);
-			//Todo: modify direction of ray given reflexion and opacity
+			Vector3d intersection = ray.getPoint(d);	
 			double escalar = 2*Util.dotProduct(ray.direction, n);
 			Vector3d direction = Util.substract(ray.direction, Util.dotScalar(n, escalar));
 			return new Ray(intersection, direction);
