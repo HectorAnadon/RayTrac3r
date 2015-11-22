@@ -19,15 +19,13 @@ public class Scene {
 	
 	private static final int numPixelX = 500;
 	private static final int numPixelY = 500;
-	private static double ambientalLightI = 0.1;
+	private static double ambientalLightI = 0.5;
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
 	
 	
 	public static void main (String[] args) {
-		//Camera c = new Camera(new Vector3d(1,4,0), new Vector3d(1,0,0), new Vector3d(-1,1,0), new Vector3d(4,0,0));
-		//Screen s = new Screen(c, 4, numPixelX, numPixelY, 10, 10);
 		
 		Vector3d ew = new Vector3d(-5,0,10);
 		Camera c = new Camera(ew, new Vector3d(-1, 0 , 2), 
@@ -59,7 +57,7 @@ public class Scene {
 				ArrayList<Vector4d> points = s.getWorldScreenCoordinates(i, j);
 				for (Vector4d v:points) {	// Intersect ray with each objects
 					
-					//System.out.println("Pixel:  " + v);
+					//Ray from eye to pixel
 					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z));
 					
 					Shape object = null;
@@ -83,18 +81,25 @@ public class Scene {
 							
 					//Only for one object:
 					if (object != null) {
+						//Ray reflected from object
 						Ray rReflected = object.intersection(r);
 						//get ambiental light
 						Color imgColor = object.getColor(ambientalLightI);
 						for (Light l:lights) {
+							//Ray from object to light
 							Ray rLight = new Ray(rReflected.position, l.getPosition());
 							boolean intersects = false;
-							//TODO fix distance for shadow
 							for (Shape obj2:objects) {
 								if (!obj2.equals(object)){
+									//Ray from object in the middle
 									Ray rReflected2 = obj2.intersection(rLight);
-									if (rReflected2 != null && Util.distance(rReflected2.position, l.getPosition())< Util.distance(rReflected.position, l.getPosition())) {
-										System.out.println(object + " " +obj2);
+									if (rReflected2 != null && 
+											Util.distance(rReflected2.position, l.getPosition())
+											< Util.distance(rReflected.position, l.getPosition())) {
+										/*System.out.println("position object: " + rReflected.position);
+										System.out.println("position in the middle:" + rReflected2.position);
+										System.out.println("position light: "+l.getPosition());
+										*/
 										intersects = true;
 									}
 								}
@@ -104,16 +109,9 @@ public class Scene {
 								imgColor = normalizeColor(imgColor, provColor);
 							}
 						}
-						
 						image.setRGB(-i+numPixelX/2,numPixelY/2-j, imgColor.getRGB());
-							
-						
 					}
-					
-					
 				}
-				
-				
 			}
 		}
 		

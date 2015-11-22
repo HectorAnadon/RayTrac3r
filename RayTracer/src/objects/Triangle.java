@@ -67,7 +67,9 @@ public class Triangle extends Shape{
 			//Check if intersects inside the triangle
 			if (contains(intersection)) {
 				//Todo: modify direction of ray given reflexion, opacity and object normal
-				return new Ray(intersection, ray.direction);
+				double escalar = 2*Util.dotProduct(ray.direction, n);
+				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(n, escalar));
+				return new Ray(intersection, direction);
 			} else {
 				return null;
 			}

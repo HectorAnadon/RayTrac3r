@@ -53,6 +53,7 @@ public class Sphere extends Shape{
 			return null;
 		}
 		else if (D == 0) {	// One intersection
+			//Intersection point?
 			return ray;
 		}
 		else {				// Two intersections
@@ -73,16 +74,21 @@ public class Sphere extends Shape{
 				return null;
 			}
 			else if (lambda1 > 0 && lambda2 < 0) {	// Return lambda1
+				Vector3d intersection = ray.getPoint(lambda1);
+				System.out.println(intersection);
 				return ray;
 			} 
 			else if (lambda1 > lambda2 && lambda2 > 0) {	// Return lambda2
-				return ray;
+				Vector3d intersection = ray.getPoint(lambda2);
+				return new Ray(intersection, ray.direction);
 			} 
 			else if (lambda1 < 0 && lambda2 > 0) {	// Return lambda2
-				return ray;
+				Vector3d intersection = ray.getPoint(lambda2);
+				return new Ray(intersection, ray.direction);
 			} 
 			else {							// Return lambda1
-				return ray;
+				Vector3d intersection = ray.getPoint(lambda1);
+				return new Ray(intersection, ray.direction);
 			}
 			
 		}

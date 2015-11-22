@@ -53,7 +53,9 @@ public class Plane extends Shape{
 			Vector3d intersection = Util.add(new Vector3d(d*ray.direction.x, d*ray.direction.y, d*ray.direction.z)
 					, ray.position);
 			//Todo: modify direction of ray given reflexion and opacity
-			return new Ray(intersection, ray.direction);
+			double escalar = 2*Util.dotProduct(ray.direction, n);
+			Vector3d direction = Util.substract(ray.direction, Util.dotScalar(n, escalar));
+			return new Ray(intersection, direction);
 		}
 	}
 	
