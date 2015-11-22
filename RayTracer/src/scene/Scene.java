@@ -19,6 +19,8 @@ public class Scene {
 	
 	private static final int numPixelX = 500;
 	private static final int numPixelY = 500;
+	private static double ambientalLightI = 0.3;
+	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
 	
@@ -27,10 +29,14 @@ public class Scene {
 		//Camera c = new Camera(new Vector3d(1,4,0), new Vector3d(1,0,0), new Vector3d(-1,1,0), new Vector3d(4,0,0));
 		//Screen s = new Screen(c, 4, numPixelX, numPixelY, 10, 10);
 		
-		Camera c = new Camera(new Vector3d(0,0,10), new Vector3d(0, 0 , 2), 
+		Vector3d ew = new Vector3d(0,0,10);
+		Camera c = new Camera(ew, new Vector3d(0, 0 , 2), 
 				new Vector3d(0,1,1), new Vector3d(0,0,0));
 		
-		double distanceScreen = -5;
+		Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
+		Light[] lights = {light};
+		
+		double distanceScreen = -3;
 		System.out.println("Screen distance: " + distanceScreen + "\n\n");
 		Screen s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
 
@@ -52,22 +58,49 @@ public class Scene {
 					//System.out.println("Pixel:  " + v);
 					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z));
 					
+					Shape object = null;
+					double minDistance = Double.POSITIVE_INFINITY;
 					for (Shape obj:objects) {
 						Ray rReflected = obj.intersection(r);
 						
 						if (rReflected != null) {
+							/*double distance = Util.distance(ew, rReflected.position);
+							 if (distance < minDistance) {
+							 object = obj;
+							 minDistance = distance; // update min distance
+							 }*/
 							//System.out.println(i + "  -  " + j);
 							// TO DO:
 								// 1. Calculate intersection between light and intersection point
 								// 2. Calculate intersection between other objects with the reflected ray
+						//}end if for ditance
+					//}end for for distance
 							
-							image.setRGB(i+numPixelX/2,numPixelY/2-j, obj.getColor().getRGB());
+							
+							//Only for one object:
+							//if (object != null) {
+							//get ambiental light
+							Color imgColor = obj.getColor(ambientalLightI);
+							for (Light l:lights) {
+								Ray rLight = new Ray(rReflected.position, l.getPosition());
+								boolean intersects = false;
+								//TODO fix distance for shadow
+								/*for (Shape obj2:objects) {
+									Ray rReflected2 = obj2.intersection(rLight);
+									if (rReflected2 != null) {
+										System.out.println(obj + " " +obj2);
+										intersects = true;
+									}
+								}*/
+								if(!intersects) {
+									Color provColor = obj.getColor(l.getIntensity());
+									imgColor = normalizeColor(imgColor, provColor);
+								}
+							}
+							
+							image.setRGB(i+numPixelX/2,numPixelY/2-j, imgColor.getRGB());
 							
 						}
-						/*else {
-							//System.out.println("No intersecta");
-							image.setRGB(i+numPixelX/2,j+numPixelY/2, Color.black.getRGB());
-						}*/
 						
 					}
 					
@@ -80,5 +113,19 @@ public class Scene {
 		
 		Render render = new Render(image);
 		
+	}
+
+
+	private static Color normalizeColor(Color imgColor, Color provColor) {
+		int r = imgColor.getRed() + provColor.getRed();
+		int g = imgColor.getGreen() + provColor.getGreen();
+		int b = imgColor.getBlue() + provColor.getBlue();
+		int max = Math.max(r, Math.max(g, b));
+		if (max > 255) {
+			r = (255*r)/max;
+			g = (255*g)/max;
+			b = (255*b)/max;
+		}
+		return new Color(r,g,b);
 	}
 }

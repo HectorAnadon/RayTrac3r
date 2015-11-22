@@ -18,6 +18,6 @@ public abstract class Shape {
 	//Returns the reflected ray or null if does not intersect
 	public abstract Ray intersection (Ray vector);
 	
-	public abstract Color getColor();
+	public abstract Color getColor(double i);
 	
 }

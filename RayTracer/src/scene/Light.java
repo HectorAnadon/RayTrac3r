@@ -5,7 +5,8 @@ import javax.vecmath.*;
 public class Light {
 	private Vector3d position;
 	private Vector3d direction;
-
+	private double intensity = 1;
+	
 	public Light (Vector3d position, Vector3d direction) {
 		this.position = position;
 		this.direction = direction;
@@ -17,6 +18,10 @@ public class Light {
 
 	public Vector3d getDirection() {
 		return direction;
+	}
+	
+	public double getIntensity() {
+		return intensity;
 	}
 
 	public void setPosition(Vector3d position) {

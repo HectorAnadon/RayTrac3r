@@ -20,6 +20,7 @@ public class Triangle extends Shape{
 	private static int r;
 	private static int g;
 	private static int b;
+	private double kd = 0.7;
 	
 	public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, double opaque) {
 		this.p1 = p1;
@@ -53,7 +54,6 @@ public class Triangle extends Shape{
 		} else {
 			if (dn > 0) {
 				n = Util.inverse(n);
-				System.out.println("aaaa");
 				dn = Util.dotProduct(ray.direction, n);
 			}
 			
@@ -98,7 +98,7 @@ public class Triangle extends Shape{
 		return p3;
 	}
 	
-	public Color getColor() {
-		return new Color(r,g,b);
+	public Color getColor(double i) {
+		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
 	}
 }

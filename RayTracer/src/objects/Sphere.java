@@ -17,6 +17,7 @@ public class Sphere extends Shape{
 	private static int red;
 	private static int g;
 	private static int b;
+	private double kd = 0.7;
 	
 	public Sphere(Vector3d c, double r, double opaque) {
 		this.c = c;
@@ -88,8 +89,8 @@ public class Sphere extends Shape{
 		
 	}
 	
-	public Color getColor() {
-		return new Color(red,g,b);
+	public Color getColor(double i) {
+		return new Color((int) (i*kd*red),(int) (i*kd*g),(int) (i*kd*b));
 	}
 
 }

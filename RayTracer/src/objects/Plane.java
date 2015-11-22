@@ -17,6 +17,7 @@ public class Plane extends Shape{
 	private static int r;
 	private static int g;
 	private static int b;
+	private double kd = 0.7;
 	
 	public Plane(Vector3d p1, Vector3d n, double opaque) {
 		this.p1 = p1;
@@ -56,7 +57,7 @@ public class Plane extends Shape{
 		}
 	}
 	
-	public Color getColor() {
-		return new Color(r,g,b);
+	public Color getColor(double i) {
+		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
 	}
 }
