@@ -63,4 +63,14 @@ public class Plane extends Shape{
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
 	}
+	
+	public Color getColor(double i, Ray l) {
+		Double cos = Util.dotProduct(l.direction, n)/
+				(Util.Norm(l.direction)*Util.Norm(n));
+		if (cos > 0) {
+			return new Color((int) (cos*i*kd*r),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
+		} else {
+			return new Color(0,0,0);
+		}
+	}
 }

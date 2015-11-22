@@ -107,7 +107,7 @@ public class Scene {
 								}
 							}
 							if(!intersects) {
-								Color provColor = object.getColor(l.getIntensity());
+								Color provColor = object.getColor(l.getIntensity(),rLight);
 								imgColor = normalizeColor(imgColor, provColor);
 							}
 						}
