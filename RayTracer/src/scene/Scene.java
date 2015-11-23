@@ -32,7 +32,7 @@ public class Scene {
 				new Vector3d(0,1,1), new Vector3d(0,0,0));
 		
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
-		Light light = new Light(new Vector3d(-5,0,15), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(-15,0,10), new Vector3d(2, 0 , 0));
 		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		Light[] lights = {light};
 		
@@ -109,10 +109,18 @@ public class Scene {
 							if(!intersects) {
 								Color difusa = object.getColor(l.getIntensity(),rLight);
 								imgColor = normalizeColor(imgColor, difusa);
-								Color especular = object.getColor(l.getIntensity(),rLight,r);
-								imgColor = normalizeColor(imgColor, especular);
-								//Test especular
-								//imgColor =object.getColor(l.getIntensity(),rLight,r);
+								Ray rLightReflected = object.intersection(rLight);
+								if (rLightReflected != null) {
+									Color especular = object.getColor(l.getIntensity(),rLightReflected,r);
+									imgColor = normalizeColor(imgColor, especular);
+									//Test especular
+									//imgColor =object.getColor(l.getIntensity(),rLightReflected,r);
+								} else{
+									//Test especular
+									//imgColor = new Color(0,0,0);
+								}
+								//Test difuso
+								//imgColor =object.getColor(l.getIntensity(),rLight);
 							}
 						}
 						image.setRGB(-i+numPixelX/2,numPixelY/2-j, imgColor.getRGB());

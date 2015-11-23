@@ -18,7 +18,7 @@ public class Plane extends Shape{
 	private static int g;
 	private static int b;
 	private double kd = 0.7;
-	private double ks = 0.7;
+	private double ks = 0.3;
 	
 	public Plane(Vector3d p1, Vector3d n, double opaque) {
 		this.p1 = p1;
