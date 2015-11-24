@@ -124,12 +124,13 @@ public class Scene {
 							if(!intersects) {
 								Color difusa = object.getColor(l.getIntensity(),rLight);
 								imgColor = normalizeColor(imgColor, difusa);
+								//TODO: Error in rLightReflected with plane!!
 								Ray rLightReflected = object.intersection(rLight);
 								if (rLightReflected != null) {
-									Color especular = object.getColor(l.getIntensity(),rLightReflected,r);
+									Color especular = object.getColor(l.getIntensity(),rLight,rLightReflected,r);
 									imgColor = normalizeColor(imgColor, especular);
 									//Test especular
-									//imgColor =object.getColor(l.getIntensity(),rLightReflected,r);
+									//imgColor =object.getColor(l.getIntensity(),rLight,rLightReflected,r);
 								} else{
 									//Test especular
 									//imgColor = new Color(0,0,0);
