@@ -17,9 +17,12 @@ public class Scene {
 	
 	static ArrayList<Shape> objects = new ArrayList<Shape>();
 	
-	private static final int numPixelX = 500;
-	private static final int numPixelY = 500;
-	private static double ambientalLightI = 0.5;
+	private static final int numPixelX = 700;
+	private static final int numPixelY = 700;
+	private static double ambientalLightI = 0.2;
+	
+	private static final int NUM_ALIASING = 4;
+	private static final boolean ALIASING = false;
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -55,15 +58,27 @@ public class Scene {
 		
 		for (int i=numPixelY/2; i>(-numPixelY/2); i--) {
 			for (int j=numPixelY/2; j>(-numPixelY/2); j--) {
-				ArrayList<Vector4d> points = s.getWorldScreenCoordinates(i, j);
-				for (Vector4d v:points) {	// Intersect ray with each objects
+				//ArrayList<Vector4d> points = s.getWorldScreenCoordinates(i, j);
+				
+				ArrayList<Vector4d> points;
+				if (ALIASING) {
+					points = s.getWorldScreenCoordinatesAntiAliasing(i, j, NUM_ALIASING);
+				} else {
+					points = s.getWorldScreenCoordinates(i, j);	
+				}
+				
+				int red = 0;
+				int green = 0;
+				int blue = 0;
+				
+				for (Vector4d v:points) {	
 					
 					//Ray from eye to pixel
 					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z));
 					
 					Shape object = null;
 					double minDistance = Double.POSITIVE_INFINITY;
-					for (Shape obj:objects) {
+					for (Shape obj:objects) {	// Intersect ray with each objects
 						Ray rReflected = obj.intersection(r);
 						
 						if (rReflected != null) {
@@ -123,8 +138,19 @@ public class Scene {
 								//imgColor =object.getColor(l.getIntensity(),rLight);
 							}
 						}
-						image.setRGB(-i+numPixelX/2,numPixelY/2-j, imgColor.getRGB());
+						
+						red += imgColor.getRed();
+						green += imgColor.getGreen();
+						blue += imgColor.getBlue();
+						
+						imgColor = null;
+						
 					}
+				}
+				if (ALIASING) {
+					image.setRGB(-i+numPixelX/2,numPixelY/2-j, new Color(red/NUM_ALIASING,green/NUM_ALIASING,blue/NUM_ALIASING).getRGB());
+				} else {
+					image.setRGB(-i+numPixelX/2,numPixelY/2-j, new Color(red,green,blue).getRGB());	
 				}
 			}
 		}
