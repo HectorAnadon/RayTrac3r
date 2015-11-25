@@ -14,19 +14,19 @@ public class Plane extends Shape{
 	
 	private Vector3d p1;
 	private Vector3d n;
-	private static int r;
-	private static int g;
-	private static int b;
+	private int r;
+	private int g;
+	private int b;
 	private double kd = 0.7;
 	private double ks = 0.3;
 	
-	public Plane(Vector3d p1, Vector3d n, double opaque) {
+	public Plane(Vector3d p1, Vector3d n, double opaque, Color c) {
 		this.p1 = p1;
 		this.n = n;
 		this.opaque = opaque;
-		g = 200;
-		r = 0;
-		b = 0;
+		g = c.getGreen();
+		r = c.getRed();
+		b = c.getBlue();
 	}
 	
 	public void transformation (Matrix4d trans) {
@@ -40,24 +40,25 @@ public class Plane extends Shape{
 	
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
-		double dn = Util.dotProduct(ray.direction, n);
+		Vector3d normal = n;
+		double dn = Util.dotProduct(ray.direction, normal);
 		if (dn == 0) {
 			return null;
 		} else {
 			if (dn > 0) {
-				n = Util.inverse(n);
-				dn = Util.dotProduct(ray.direction, n);
+				normal = Util.inverse(n);
+				dn = Util.dotProduct(ray.direction, normal);
 			}
-			
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
-					n)/dn;
-			if (dn < 0 && d < 0) {
-				return null;
+					normal)/dn;
+			if (dn < 0) {
+				Vector3d intersection = ray.getPoint(d);	
+				double escalar = 2*Util.dotProduct(ray.direction, normal);
+				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
+				return new Ray(intersection, direction);
 			}
-			Vector3d intersection = ray.getPoint(d);	
-			double escalar = 2*Util.dotProduct(ray.direction, n);
-			Vector3d direction = Util.substract(ray.direction, Util.dotScalar(n, escalar));
-			return new Ray(intersection, direction);
+			return null;
+			
 		}
 	}
 	

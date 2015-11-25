@@ -17,21 +17,21 @@ public class Triangle extends Shape{
 	private Vector3d p2;
 	private Vector3d p3;
 	private Vector3d n;
-	private static int r;
-	private static int g;
-	private static int b;
+	private int r;
+	private int g;
+	private int b;
 	private double kd = 0.7;
 	private double ks = 0.5;
 	
-	public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, double opaque) {
+	public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, double opaque, Color c) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.p3 = p3;
 		this.opaque = opaque;
-		r = 255;
-		g = 59;
-		b = 0;
-		n = Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1));
+		r = c.getRed();
+		g = c.getGreen();
+		b = c.getBlue();
+		n = Util.inverse(Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1)));
 		System.out.println("normal " +n);
 	}
 	
@@ -49,17 +49,18 @@ public class Triangle extends Shape{
 	
 	//Returns the reflected ray or null if does not intersect
 	public Ray intersection (Ray ray) {
-		double dn = Util.dotProduct(ray.direction, n);
+		Vector3d normal = n;
+		double dn = Util.dotProduct(ray.direction, normal);
 		if (dn == 0) {
 			return null;
 		} else {
-			if (dn > 0) {
-				n = Util.inverse(n);
+			/*if (dn > 0) {
+				normal = Util.inverse(n);
 				dn = Util.dotProduct(ray.direction, n);
-			}
+			}*/
 			
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
-					n)/dn;
+					normal)/dn;
 			if (dn < 0 && d < 0) {
 				return null;
 			}
@@ -68,8 +69,8 @@ public class Triangle extends Shape{
 			//Check if intersects inside the triangle
 			if (contains(intersection)) {
 				//Todo: modify direction of ray given reflexion, opacity and object normal
-				double escalar = 2*Util.dotProduct(ray.direction, n);
-				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(n, escalar));
+				double escalar = 2*Util.dotProduct(ray.direction, normal);
+				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
 				return new Ray(intersection, direction);
 			} else {
 				return null;

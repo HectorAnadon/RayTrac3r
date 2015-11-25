@@ -51,9 +51,14 @@ public class Scene {
 		objects.add(new Triangle(new Vector3d(-5,0,5), new Vector3d(-2,1,5), new Vector3d(-1,0,5), 1.0));
 		//System.out.println("Sphere distance: " + 4 + "\n\n");
 		objects.add(new Sphere(new Vector3d(0,3,5), 1, 1));*/
-		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(15,0,-20), 1.0));
-		objects.add(new Sphere(new Vector3d(-3,0,5), 3, 1));
-		objects.add(new Sphere(new Vector3d(-7,0,5), 0.4, 1));
+		objects.add(new Triangle(new Vector3d(-3,5,0), new Vector3d(0,6,5), new Vector3d(1,5,5), 1.0, new Color(0,200,200)));
+		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,3), 1.0, new Color(0,200,0)));
+		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,1), 1.0, new Color(0,0,200)));
+		//objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(15,0,20), 1.0, new Color(0,0,200)));
+		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
+		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
+		objects.add(a);
+		objects.add(b);
 
 		
 		for (int i=numPixelY/2; i>(-numPixelY/2); i--) {
@@ -124,7 +129,7 @@ public class Scene {
 							if(!intersects) {
 								Color difusa = object.getColor(l.getIntensity(),rLight);
 								imgColor = normalizeColor(imgColor, difusa);
-								//TODO: Error in rLightReflected with plane!!
+								//TODO: error with rLightReflected with plane. I think normal should be inverse only for these case
 								Ray rLightReflected = object.intersection(rLight);
 								if (rLightReflected != null) {
 									Color especular = object.getColor(l.getIntensity(),rLight,rLightReflected,r);

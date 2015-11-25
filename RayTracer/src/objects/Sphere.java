@@ -14,19 +14,19 @@ public class Sphere extends Shape{
 	
 	private Vector3d c;
 	private double r;
-	private static int red;
-	private static int g;
-	private static int b;
+	private int red;
+	private int g;
+	private int b;
 	private double kd = 0.7;
 	private double ks = 0.5;
 	
-	public Sphere(Vector3d c, double r, double opaque) {
+	public Sphere(Vector3d c, double r, double opaque, Color color) {
 		this.c = c;
 		this.r = r;
 		this.opaque = opaque;
-		red = 255;
-		g = 59;
-		b = 0;
+		red = color.getRed();
+		g = color.getGreen();
+		b = color.getBlue();
 	}
 	
 	public void transformation (Matrix4d trans) {
