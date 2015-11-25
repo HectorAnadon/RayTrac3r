@@ -8,6 +8,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4d;
 
+import objects.Model;
 import objects.Plane;
 import objects.Shape;
 import objects.Sphere;
@@ -35,11 +36,11 @@ public class Scene {
 				new Vector3d(0,1,1), new Vector3d(0,0,0));
 		
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
-		Light light = new Light(new Vector3d(-15,0,10), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(0,10,10), new Vector3d(2, 0 , 0));
 		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		Light[] lights = {light};
 		
-		double distanceScreen = -3;
+		double distanceScreen = -18;
 		System.out.println("Screen distance: " + distanceScreen + "\n\n");
 		Screen s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
 
@@ -51,17 +52,36 @@ public class Scene {
 		objects.add(new Triangle(new Vector3d(-5,0,5), new Vector3d(-2,1,5), new Vector3d(-1,0,5), 1.0));
 		//System.out.println("Sphere distance: " + 4 + "\n\n");
 		objects.add(new Sphere(new Vector3d(0,3,5), 1, 1));*/
-		objects.add(new Triangle(new Vector3d(-3,5,0), new Vector3d(0,6,5), new Vector3d(1,5,5), 1.0, new Color(0,200,200)));
+//		objects.add(new Triangle(new Vector3d(-3,5,0), new Vector3d(0,6,5), new Vector3d(1,5,5), 1.0, new Color(0,200,200)));
 		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,3), 1.0, new Color(0,200,0)));
 		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,1), 1.0, new Color(0,0,200)));
 		//objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(15,0,20), 1.0, new Color(0,0,200)));
-		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
-		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
-		objects.add(a);
-		objects.add(b);
+//		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
+//		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
+//		objects.add(a);
+//		objects.add(b);
+		
+		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
+		objects.addAll(m.getTriangles());
+		//objects.add(new Model("objects/Pistacho/pistachio.obj"));
 
+		int progress = 1;
+		int currentProgress = 1;
+		boolean showProgress = false;
 		
 		for (int i=numPixelY/2; i>(-numPixelY/2); i--) {
+			
+			// Shows the render progress
+			if (showProgress) {
+				System.out.println(currentProgress + " %");
+				showProgress = false;
+			}
+			
+			if (((int) progress*100/numPixelX) != currentProgress) {
+				currentProgress = progress*100/numPixelX;
+				showProgress = true;
+			}
+			
 			for (int j=numPixelY/2; j>(-numPixelY/2); j--) {
 				//ArrayList<Vector4d> points = s.getWorldScreenCoordinates(i, j);
 				
@@ -83,14 +103,17 @@ public class Scene {
 					
 					Shape object = null;
 					double minDistance = Double.POSITIVE_INFINITY;
+					Ray rReflected = null;
+					
 					for (Shape obj:objects) {	// Intersect ray with each objects
-						Ray rReflected = obj.intersection(r);
+						Ray currentReflected = obj.intersection(r);
 						
-						if (rReflected != null) {
-							double distance = Util.distance(ew, rReflected.position);
+						if (currentReflected != null) {
+							double distance = Util.distance(ew, currentReflected.position);
 							 if (distance < minDistance) {
 								 object = obj;
 								 minDistance = distance; // update min distance
+								 rReflected = currentReflected;
 							 }
 							//System.out.println(i + "  -  " + j);
 							// TO DO:
@@ -103,7 +126,7 @@ public class Scene {
 					//Only for one object:
 					if (object != null) {
 						//Ray reflected from object
-						Ray rReflected = object.intersection(r);
+						rReflected = object.intersection(r);
 						//get ambiental light
 						Color imgColor = object.getColor(ambientalLightI);
 						for (Light l:lights) {
@@ -159,6 +182,8 @@ public class Scene {
 					image.setRGB(-i+numPixelX/2,numPixelY/2-j, new Color(red,green,blue).getRGB());	
 				}
 			}
+			
+			progress ++;
 		}
 		
 		Render render = new Render(image);

@@ -32,7 +32,7 @@ public class Triangle extends Shape{
 		g = c.getGreen();
 		b = c.getBlue();
 		n = Util.inverse(Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1)));
-		System.out.println("normal " +n);
+//		System.out.println("normal " +n);
 	}
 	
 	public void transformation (Matrix4d trans) {
