@@ -16,13 +16,16 @@ import objects.Triangle;
 
 public class Scene {
 	
-	static ArrayList<Shape> objects = new ArrayList<Shape>();
-	
+	private static ArrayList<Shape> objects = new ArrayList<Shape>();
+	private static ArrayList<Light> lights = new ArrayList<Light>();
+	private static Vector3d ew;
+
 	private static final int numPixelX = 700;
 	private static final int numPixelY = 700;
-	private static double ambientalLightI = 0.2;
+	private static double ambientalLightI = 0;
 	
-	private static final int NUM_ALIASING = 4;
+	private static final int NUM_REFLECTED = 0;
+	private static final int NUM_ALIASING = 6;
 	private static final boolean ALIASING = false;
 	
 	
@@ -31,35 +34,36 @@ public class Scene {
 	
 	public static void main (String[] args) {
 		
-		Vector3d ew = new Vector3d(-5,0,10);
-		Camera c = new Camera(ew, new Vector3d(-1, 0 , 2), 
-				new Vector3d(0,1,1), new Vector3d(0,0,0));
+		ew = new Vector3d(0,0,0);
+		Camera c = new Camera(ew, new Vector3d(-1,0,0), 
+				new Vector3d(-1,1,0), new Vector3d(0,0,0));
 		
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
-		Light light = new Light(new Vector3d(0,10,10), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(0,0,0), new Vector3d(2, 0 , 0));
 		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
-		Light[] lights = {light};
+		lights.add(light);
 		
 		double distanceScreen = -3;
 		System.out.println("Screen distance: " + distanceScreen + "\n\n");
 		Screen s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
 
 
+//		objects.add(new Triangle(new Vector3d(13,-5,5), new Vector3d(10,-5,-5), new Vector3d(10,0,0), 1.0, new Color(255,255,255)));
+
+//		objects.add(new Plane(new Vector3d(0,-5,0), new Vector3d(0,1,0), 1.0, new Color(0,200,0)));
+//		objects.add(new Plane(new Vector3d(0,10,0), new Vector3d(0,-1,0), 1.0, new Color(0,200,100)));
+		objects.add(new Plane(new Vector3d(0,10,0), new Vector3d(0,-1,0), 1.0, new Color(0,0,255)));
+//		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(100,100,200)));
+		Plane p = new Plane(new Vector3d(0,0,20), new Vector3d(0,0,-1), 1.0, new Color(255,255,255));
+		p.setKr(1);
+		objects.add(p);
 		
-		/*System.out.println("Triangle distance: " + 5 + "\n\n");
+//		objects.add(new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200)));
 		
-		objects.add(new Triangle(new Vector3d(-1,0,5), new Vector3d(0,1,5), new Vector3d(1,0,5), 1.0));
-		objects.add(new Triangle(new Vector3d(-5,0,5), new Vector3d(-2,1,5), new Vector3d(-1,0,5), 1.0));
-		//System.out.println("Sphere distance: " + 4 + "\n\n");
-		objects.add(new Sphere(new Vector3d(0,3,5), 1, 1));*/
-		objects.add(new Triangle(new Vector3d(-3,5,0), new Vector3d(0,6,5), new Vector3d(1,5,5), 1.0, new Color(0,200,200)));
-		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,3), 1.0, new Color(0,200,0)));
-		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,1), 1.0, new Color(0,0,200)));
-		//objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(15,0,20), 1.0, new Color(0,0,200)));
-		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
-		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
-		objects.add(a);
-		objects.add(b);
+//		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
+//		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
+//		objects.add(a);
+//		objects.add(b);
 		
 //		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
 //		objects.addAll(m.getTriangles());
@@ -101,82 +105,12 @@ public class Scene {
 					//Ray from eye to pixel
 					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z));
 					
-					Shape object = null;
-					double minDistance = Double.POSITIVE_INFINITY;
-					Ray rReflected = null;
-					
-					for (Shape obj:objects) {	// Intersect ray with each objects
-						Ray currentReflected = obj.intersection(r);
-						
-						if (currentReflected != null) {
-							double distance = Util.distance(ew, currentReflected.position);
-							 if (distance < minDistance) {
-								 object = obj;
-								 minDistance = distance; // update min distance
-								 rReflected = currentReflected;
-							 }
-							//System.out.println(i + "  -  " + j);
-							// TO DO:
-								// 1. Calculate intersection between light and intersection point
-								// 2. Calculate intersection between other objects with the reflected ray
-						}
+					Color currentColor = traceRay(r, NUM_REFLECTED);
+					if (currentColor != null) {
+						red += currentColor.getRed();
+						green += currentColor.getGreen();
+						blue += currentColor.getBlue();
 					}
-							
-							
-					//Only for one object:
-					// AMBIANTAL LIGHT + DIFUSSE
-					if (object != null) {
-						//get ambiental light
-						Color imgColor = object.getColor(ambientalLightI);
-						for (Light l:lights) {
-							//Ray from object to light
-							Ray rLight = new Ray(rReflected.position, l.getPosition());
-							boolean intersects = false;
-							for (Shape obj2:objects) {
-								if (!obj2.equals(object)){
-									//Ray from object in the middle
-									Ray rReflected2 = obj2.intersection(rLight);
-									//sometimes intersections it shouldnt
-									if (rReflected2 != null && 
-											Util.distance(rReflected2.position, l.getPosition())
-											< Util.distance(rReflected.position, l.getPosition())) {
-										/*System.out.println("position object: " + rReflected.position);
-										System.out.println("position in the middle:" + rReflected2.position);
-										System.out.println("position light: "+l.getPosition());
-										*/
-										intersects = true;
-									}
-								}
-							}
-							if(!intersects) {
-								Color difusa = object.getColor(l.getIntensity(),rLight);
-								imgColor = normalizeColor(imgColor, difusa);
-								//TODO: error with rLightReflected with plane. I think normal should be inverse only for these case
-								Ray rLightReflected = object.intersection(rLight);
-								if (rLightReflected != null) {
-									Color especular = object.getColor(l.getIntensity(),rLight,rLightReflected,r);
-									imgColor = normalizeColor(imgColor, especular);
-									//Test especular
-									//imgColor =object.getColor(l.getIntensity(),rLight,rLightReflected,r);
-								} else{
-									//Test especular
-									//imgColor = new Color(0,0,0);
-								}
-								//Test difuso
-								//imgColor =object.getColor(l.getIntensity(),rLight);
-							}
-						}
-						
-											
-						red += imgColor.getRed();
-						green += imgColor.getGreen();
-						blue += imgColor.getBlue();
-						
-						imgColor = null;
-						
-					}
-					
-					
 					
 					
 				}
@@ -206,5 +140,95 @@ public class Scene {
 			b = (255*b)/max;
 		}
 		return new Color(r,g,b);
+	}
+	
+	
+	public static Color traceRay(Ray r, int raysReaming) {
+		Shape object = null;
+		double minDistance = Double.POSITIVE_INFINITY;
+		Ray rReflected = null;
+		
+		Color imgColor = null;
+		Color reflectedColor = null;
+		Color refractedColor = null;
+		
+		for (Shape obj:objects) {	// Intersect ray with each objects
+			Ray currentReflected = obj.intersection(r);
+			
+			if (currentReflected != null) {
+				double distance = Util.distance(ew, currentReflected.position);
+				 if (distance < minDistance) {
+					 object = obj;
+					 minDistance = distance; // update min distance
+					 rReflected = currentReflected;
+				 }
+				//System.out.println(i + "  -  " + j);
+				// TO DO:
+					// 1. Calculate intersection between light and intersection point
+					// 2. Calculate intersection between other objects with the reflected ray
+			}
+		}
+				
+		//Only for one object:
+		// AMBIANTAL LIGHT + DIFUSSE
+		if (object != null) {
+			//get ambiental light
+			imgColor = object.getColor(ambientalLightI);
+			for (Light l:lights) {
+				//Ray from object to light
+				Ray rLight = new Ray(rReflected.position, l.getPosition());
+				boolean intersects = false;
+				for (Shape obj2:objects) {
+					if (!obj2.equals(object)){
+						//Ray from object in the middle
+						Ray rReflected2 = obj2.intersection(rLight);
+						//sometimes intersections it shouldnt
+						if (rReflected2 != null && 
+								Util.distance(rReflected2.position, l.getPosition())
+								< Util.distance(rReflected.position, l.getPosition())) {
+							/*System.out.println("position object: " + rReflected.position);
+							System.out.println("position in the middle:" + rReflected2.position);
+							System.out.println("position light: "+l.getPosition());
+							*/
+							intersects = true;
+						}
+					}
+				}
+				if(!intersects) {
+					Color difusa = object.getColor(l.getIntensity(),rLight);
+					imgColor = normalizeColor(imgColor, difusa);
+					//TODO: error with rLightReflected with plane. I think normal should be inverse only for these case
+					Ray rLightReflected = object.intersection(rLight);
+					if (rLightReflected != null) {
+						Color especular = object.getColor(l.getIntensity(),rLight,rLightReflected,r);
+						imgColor = normalizeColor(imgColor, especular);
+						//Test especular
+						//imgColor =object.getColor(l.getIntensity(),rLight,rLightReflected,r);
+					} else{
+						//Test especular
+						//imgColor = new Color(0,0,0);
+					}
+					//Test difuso
+					//imgColor =object.getColor(l.getIntensity(),rLight);
+				}
+			}		// End of lights
+			
+			
+			// Color reflected
+			if (raysReaming > 0) {
+				reflectedColor = traceRay(rReflected, raysReaming - 1);
+				if (reflectedColor != null) {
+					reflectedColor = new Color((int) object.kr*reflectedColor.getRed(), 
+							(int) object.kr*reflectedColor.getGreen(), (int) object.kr*reflectedColor.getBlue());
+					imgColor = normalizeColor(imgColor, reflectedColor);
+					raysReaming = 0;
+				}
+			}
+		
+			
+		}	// End of object != null
+		
+		return imgColor;
+
 	}
 }
