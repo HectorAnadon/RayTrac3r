@@ -40,7 +40,7 @@ public class Scene {
 		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		Light[] lights = {light};
 		
-		double distanceScreen = -18;
+		double distanceScreen = -3;
 		System.out.println("Screen distance: " + distanceScreen + "\n\n");
 		Screen s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
 
@@ -52,18 +52,18 @@ public class Scene {
 		objects.add(new Triangle(new Vector3d(-5,0,5), new Vector3d(-2,1,5), new Vector3d(-1,0,5), 1.0));
 		//System.out.println("Sphere distance: " + 4 + "\n\n");
 		objects.add(new Sphere(new Vector3d(0,3,5), 1, 1));*/
-//		objects.add(new Triangle(new Vector3d(-3,5,0), new Vector3d(0,6,5), new Vector3d(1,5,5), 1.0, new Color(0,200,200)));
+		objects.add(new Triangle(new Vector3d(-3,5,0), new Vector3d(0,6,5), new Vector3d(1,5,5), 1.0, new Color(0,200,200)));
 		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,3), 1.0, new Color(0,200,0)));
 		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(-1,0,1), 1.0, new Color(0,0,200)));
 		//objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(15,0,20), 1.0, new Color(0,0,200)));
-//		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
-//		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
-//		objects.add(a);
-//		objects.add(b);
+		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
+		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
+		objects.add(a);
+		objects.add(b);
 		
-		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
-		objects.addAll(m.getTriangles());
-		//objects.add(new Model("objects/Pistacho/pistachio.obj"));
+//		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
+//		objects.addAll(m.getTriangles());
+//		objects.add(new Model("objects/Pistacho/pistachio.obj"));
 
 		int progress = 1;
 		int currentProgress = 1;
@@ -73,14 +73,14 @@ public class Scene {
 			
 			// Shows the render progress
 			if (showProgress) {
-				System.out.println(currentProgress + " %");
+				System.out.println((currentProgress + 1) + " %");
 				showProgress = false;
 			}
-			
 			if (((int) progress*100/numPixelX) != currentProgress) {
 				currentProgress = progress*100/numPixelX;
 				showProgress = true;
 			}
+			
 			
 			for (int j=numPixelY/2; j>(-numPixelY/2); j--) {
 				//ArrayList<Vector4d> points = s.getWorldScreenCoordinates(i, j);
@@ -96,7 +96,7 @@ public class Scene {
 				int green = 0;
 				int blue = 0;
 				
-				for (Vector4d v:points) {	
+				for (Vector4d v:points) { // For each points in the pixel (AntiAliasing)	
 					
 					//Ray from eye to pixel
 					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z));
@@ -124,9 +124,8 @@ public class Scene {
 							
 							
 					//Only for one object:
+					// AMBIANTAL LIGHT + DIFUSSE
 					if (object != null) {
-						//Ray reflected from object
-						rReflected = object.intersection(r);
 						//get ambiental light
 						Color imgColor = object.getColor(ambientalLightI);
 						for (Light l:lights) {
@@ -168,6 +167,7 @@ public class Scene {
 							}
 						}
 						
+											
 						red += imgColor.getRed();
 						green += imgColor.getGreen();
 						blue += imgColor.getBlue();
@@ -175,6 +175,10 @@ public class Scene {
 						imgColor = null;
 						
 					}
+					
+					
+					
+					
 				}
 				if (ALIASING) {
 					image.setRGB(-i+numPixelX/2,numPixelY/2-j, new Color(red/NUM_ALIASING,green/NUM_ALIASING,blue/NUM_ALIASING).getRGB());

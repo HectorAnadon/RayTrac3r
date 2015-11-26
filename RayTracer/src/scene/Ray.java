@@ -30,4 +30,5 @@ public class Ray {
 	public Vector3d getPoint(double lambda) {
 		return Util.add(position, Util.dotScalar(direction, lambda));
 	}
+	
 }

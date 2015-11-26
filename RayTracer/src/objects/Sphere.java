@@ -13,18 +13,13 @@ import scene.Util;
 public class Sphere extends Shape{
 	
 	private Vector3d c;
-	private double r;
-	private int red;
-	private int g;
-	private int b;
-	private double kd = 0.7;
-	private double ks = 0.5;
+	private double rad;
 	
-	public Sphere(Vector3d c, double r, double opaque, Color color) {
+	public Sphere(Vector3d c, double rad, double opaque, Color color) {
 		this.c = c;
-		this.r = r;
+		this.rad = rad;
 		this.opaque = opaque;
-		red = color.getRed();
+		r = color.getRed();
 		g = color.getGreen();
 		b = color.getBlue();
 	}
@@ -41,7 +36,7 @@ public class Sphere extends Shape{
 		
 		double A = Util.dotProduct(ray.direction, ray.direction);
 		double B = Util.dotProduct(Util.substract(ray.position, c), ray.direction);
-		double C = Util.dotProduct(Util.substract(ray.position, c), Util.substract(ray.position, c)) - r;
+		double C = Util.dotProduct(Util.substract(ray.position, c), Util.substract(ray.position, c)) - rad;
 		
 		double D = B*B - A*C;
 
@@ -102,7 +97,7 @@ public class Sphere extends Shape{
 	}
 
 	public Color getColor(double i) {
-		return new Color((int) (i*kd*red),(int) (i*kd*g),(int) (i*kd*b));
+		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
 	}
 	
 	public Color getColor(double i, Ray l) {
@@ -110,7 +105,7 @@ public class Sphere extends Shape{
 		Double cos = Util.dotProduct(l.direction, n)/
 				(Util.Norm(l.direction)*Util.Norm(n));
 		if (cos > 0) {
-			return new Color((int) (cos*i*kd*red),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
+			return new Color((int) (cos*i*kd*r),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
 		} else {
 			return new Color(0,0,0);
 		}
@@ -128,11 +123,20 @@ public class Sphere extends Shape{
 			//System.out.println(rLight.direction);
 			//System.out.println(vision.direction);
 			if (cos > 0) {
-				return new Color((int) (cos*i*ks*red),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
+				return new Color((int) (cos*i*ks*r),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
 			}
 		}
 		return new Color(0,0,0);
 		
 	}
 
+	
+	public Ray getReflectedRay(Ray originRay, Vector3d intersection){
+		Vector3d V = new Vector3d(originRay.direction);
+		Vector3d N = Util.substract(intersection, c);
+		
+		// R = V-2(V*N)N
+		Vector3d R = Util.substract(V, Util.dotScalar(N, 2*Util.dotProduct(V, N)));
+		return new Ray(intersection, R);
+	}
 }

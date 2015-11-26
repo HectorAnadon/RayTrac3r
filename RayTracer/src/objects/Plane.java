@@ -14,11 +14,6 @@ public class Plane extends Shape{
 	
 	private Vector3d p1;
 	private Vector3d n;
-	private int r;
-	private int g;
-	private int b;
-	private double kd = 0.7;
-	private double ks = 0.3;
 	
 	public Plane(Vector3d p1, Vector3d n, double opaque, Color c) {
 		this.p1 = p1;
@@ -90,4 +85,15 @@ public class Plane extends Shape{
 		return new Color(0,0,0);
 		
 	}
+
+
+	public Ray getReflectedRay(Ray originRay, Vector3d intersection){
+		Vector3d V = new Vector3d(originRay.direction);
+		Vector3d N = new Vector3d(n);
+		
+		// R = V-2(V*N)N
+		Vector3d R = Util.substract(V, Util.dotScalar(N, 2*Util.dotProduct(V, N)));
+		return new Ray(intersection, R);
+	}
+	
 }
