@@ -58,33 +58,7 @@ public class Plane extends Shape{
 			
 		}
 	}
-	
-	public Ray intersection2 (Ray ray) {
-		Vector3d d = ray.direction;
-		Vector3d p = new Vector3d(p1);
-		double inf = d.dot(n);
-		if (inf < 0){
-			/*
-			 * La normal del plano y el rayo van en sentidos inveros, entonces 
-			 * intersectan
-			 */
-			p.sub(ray.position);
-			Vector3d vec = new Vector3d(p);
-			double sup = vec.dot(n);
-			Vector3d intersection = ray.getPoint(sup/inf);
-			
-			return getReflectedRay(ray, intersection);
-		} else {
-			/*
-			 * El rayo no intersecta, se devuelve null ( inf == 0)
-			 * o 
-			 * El plano esta de espaldas al ojo, suponiendo que solo
-			 * se ver por una cara, entonces este no se ve (inf > 0)
-			 */
-			return null;
-		}	
-	}
-	
+		
 	
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
@@ -109,7 +83,7 @@ public class Plane extends Shape{
 					(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
 			if (cos > 0) {
 				return new Color((int) (cos*i*ks*r),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
-			} 
+			}
 		}
 		return new Color(0,0,0);
 		
