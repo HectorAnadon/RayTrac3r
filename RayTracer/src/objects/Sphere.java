@@ -54,7 +54,6 @@ public class Sphere extends Shape{
 		}
 		else {				// Two intersections
 			
-			
 			double lambda1 = (-2*B + Math.sqrt(4*B*B - 4*A*C))/(2*A);
 			double lambda2 = (-2*B - Math.sqrt(4*B*B - 4*A*C))/(2*A);
 			

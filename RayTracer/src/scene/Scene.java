@@ -20,12 +20,12 @@ public class Scene {
 	private static ArrayList<Light> lights = new ArrayList<Light>();
 	private static Vector3d ew;
 
-	private static final int numPixelX = 700;
-	private static final int numPixelY = 700;
-	private static double ambientalLightI = 0;
+	private static final int numPixelX = 800;
+	private static final int numPixelY = 800;
+	private static double ambientalLightI = 0.4;
 	
-	private static final int NUM_REFLECTED = 1;
-	private static final int NUM_ALIASING = 5;
+	private static final int NUM_REFLECTED = 3;
+	private static final int NUM_ALIASING = 25;
 	private static final boolean ALIASING = true;
 	
 	
@@ -34,7 +34,7 @@ public class Scene {
 	
 	public static void main (String[] args) {
 		
-		ew = new Vector3d(-0,0,0);
+		ew = new Vector3d(-20,0,0);
 		Camera c = new Camera(ew, new Vector3d(-1,0,0), 
 				new Vector3d(-1,1,0), new Vector3d(0,0,0));
 		
@@ -74,7 +74,7 @@ public class Scene {
 		sphere.setKr(0.9);
 		objects.add(sphere);
 		
-		Sphere sphere2 = new Sphere(new Vector3d(7,5,0), 5, 1, new Color(255,0,0));
+		Sphere sphere2 = new Sphere(new Vector3d(7,5,0), 5, 1, new Color(0,255,0));
 		sphere2.setKr(0.9);
 		objects.add(sphere2);
 		
@@ -170,7 +170,7 @@ public class Scene {
 		double minDistance = Double.POSITIVE_INFINITY;
 		Ray rReflected = null;
 		
-		Color imgColor = null;
+		Color imgColor = new Color(0,0,0);
 		Color reflectedColor = null;
 		Color refractedColor = null;
 		
@@ -195,7 +195,10 @@ public class Scene {
 		// AMBIANTAL LIGHT + DIFUSSE
 		if (object != null) {
 			//get ambiental light
-			imgColor = object.getColor(ambientalLightI);
+			if (raysReaming == NUM_REFLECTED) {
+				imgColor = object.getColor(ambientalLightI);
+			}
+			
 			for (Light l:lights) {
 				//Ray from object to light
 				Ray rLight = new Ray(rReflected.position, l.getPosition());
