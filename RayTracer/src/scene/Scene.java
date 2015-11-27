@@ -52,7 +52,7 @@ public class Scene {
 
 //		objects.add(new Plane(new Vector3d(0,-5,0), new Vector3d(0,1,0), 1.0, new Color(0,200,0)));
 //		objects.add(new Plane(new Vector3d(0,10,0), new Vector3d(0,-1,0), 1.0, new Color(0,200,100)));
-		objects.add(new Plane(new Vector3d(0,10,0), new Vector3d(0,-1,0), 1.0, new Color(0,0,255)));
+		objects.add(new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255)));
 //		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(100,100,200)));
 		Plane p = new Plane(new Vector3d(0,0,20), new Vector3d(0,0,-1), 1.0, new Color(255,255,255));
 		p.setKr(1);
@@ -184,7 +184,7 @@ public class Scene {
 						Ray rReflected2 = obj2.intersection(rLight);
 						//sometimes intersections it shouldnt
 						if (rReflected2 != null && 
-								Util.distance(rReflected2.position, l.getPosition())
+								(Util.distance(rReflected2.position, l.getPosition()) + Util.distance(rReflected.position, l.getPosition()))
 								< Util.distance(rReflected.position, l.getPosition())) {
 							/*System.out.println("position object: " + rReflected.position);
 							System.out.println("position in the middle:" + rReflected2.position);
@@ -194,7 +194,7 @@ public class Scene {
 						}
 					}
 				}
-				if(!intersects) {
+				if(!intersects) {		// Calculate color without shadow
 					Color difusa = object.getColor(l.getIntensity(),rLight);
 					imgColor = normalizeColor(imgColor, difusa);
 					//TODO: error with rLightReflected with plane. I think normal should be inverse only for these case
