@@ -49,21 +49,12 @@ public class Triangle extends Shape{
 		if (dn == 0) {
 			return null;
 		} else {
-			/*if (dn > 0) {
-				normal = Util.inverse(n);
-				dn = Util.dotProduct(ray.direction, n);
-			}*/
-			
 			double d = Util.dotProduct(Util.substract(p1, ray.position),
 					normal)/dn;
-			if (dn < 0 && d < 0) {
-				return null;
-			}
 			Vector3d intersection = ray.getPoint(d);
 			
 			//Check if intersects inside the triangle
-			if (contains(intersection)) {
-				//Todo: modify direction of ray given reflexion, opacity and object normal
+			if (dn < 0 && contains(intersection)) {
 				double escalar = 2*Util.dotProduct(ray.direction, normal);
 				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
 				return new Ray(intersection, Util.inverse(direction));
