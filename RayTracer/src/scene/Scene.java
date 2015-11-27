@@ -25,7 +25,7 @@ public class Scene {
 	private static double ambientalLightI = 0;
 	
 	private static final int NUM_REFLECTED = 1;
-	private static final int NUM_ALIASING = 15;
+	private static final int NUM_ALIASING = 18;
 	private static final boolean ALIASING = true;
 	
 	
@@ -69,8 +69,9 @@ public class Scene {
 		Plane p4 = new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(255,0,0));
 		p4.setKr(0);
 		objects.add(p4);
-		
-		objects.add(new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200)));
+		Sphere sphere = new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200));
+		sphere.setKr(0.9);
+		objects.add(sphere);
 		
 //		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
 //		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
@@ -195,9 +196,8 @@ public class Scene {
 						//Ray from object in the middle
 						Ray rReflected2 = obj2.intersection(rLight);
 						//sometimes intersections it shouldnt
-						if (rReflected2 != null && 
-								(Util.distance(rReflected2.position, l.getPosition()))
-								< Util.distance(rReflected.position, l.getPosition())) {
+						if (rReflected2 != null &&
+								(between(rReflected2.position, l.getPosition(),rReflected.position))) {
 							/*System.out.println("position object: " + rReflected.position);
 							System.out.println("position in the middle:" + rReflected2.position);
 							System.out.println("position light: "+l.getPosition());
@@ -245,5 +245,12 @@ public class Scene {
 		
 		return imgColor;
 
+	}
+
+	//Is b between a and c?
+	private static boolean between(Vector3d b, Vector3d a, Vector3d c) {
+		if (Util.distance(a, b) + Util.distance(c, b) == Util.distance(a, c))
+		    return true;
+		return false;
 	}
 }
