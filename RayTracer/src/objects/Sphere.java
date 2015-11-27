@@ -71,19 +71,19 @@ public class Sphere extends Shape{
 			}
 			else if (lambda1 > 0 && lambda2 < 0) {	// Return lambda1
 				Vector3d intersection = ray.getPoint(lambda1);
-				return new Ray(intersection, direction(ray, intersection));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)));
 			} 
 			else if (lambda1 > lambda2 && lambda2 > 0) {	// Return lambda2
 				Vector3d intersection = ray.getPoint(lambda2);
-				return new Ray(intersection, direction(ray, intersection));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)));
 			} 
 			else if (lambda1 < 0 && lambda2 > 0) {	// Return lambda2
 				Vector3d intersection = ray.getPoint(lambda2);
-				return new Ray(intersection, direction(ray, intersection));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)));
 			} 
 			else {							// Return lambda1
 				Vector3d intersection = ray.getPoint(lambda1);
-				return new Ray(intersection, direction(ray, intersection));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)));
 			}
 			
 		}
@@ -138,5 +138,9 @@ public class Sphere extends Shape{
 		// R = V-2(V*N)N
 		Vector3d R = Util.substract(V, Util.dotScalar(N, 2*Util.dotProduct(V, N)));
 		return new Ray(intersection, R);
+	}
+	
+	public void setKr(double kr) {
+		this.kr = kr;
 	}
 }

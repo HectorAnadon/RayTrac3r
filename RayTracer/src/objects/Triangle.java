@@ -66,7 +66,7 @@ public class Triangle extends Shape{
 				//Todo: modify direction of ray given reflexion, opacity and object normal
 				double escalar = 2*Util.dotProduct(ray.direction, normal);
 				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
-				return new Ray(intersection, direction);
+				return new Ray(intersection, Util.inverse(direction));
 			} else {
 				return null;
 			}
@@ -135,5 +135,9 @@ public class Triangle extends Shape{
 		// R = V-2(V*N)N
 		Vector3d R = Util.substract(V, Util.dotScalar(N, 2*Util.dotProduct(V, N)));
 		return new Ray(intersection, R);
+	}
+	
+	public void setKr(double kr) {
+		this.kr = kr;
 	}
 }
