@@ -99,5 +99,8 @@ public class Util {
 				Math.pow(v1.z-v2.z, 2.0));
 	}
 
+	public static double distanceLight ( Vector3d p1, Vector3d p2) {
+		return Math.pow(p1.x, 2) - Math.pow(p1.x, 2);
+	}
 }
 

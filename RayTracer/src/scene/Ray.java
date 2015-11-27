@@ -11,14 +11,9 @@ public class Ray {
 	public Vector3d direction;
 
 	public Ray(Vector3d origin, Vector3d direction) {
-		//super();
-		//direction.normalize();
 		this.position = origin;
-		//System.out.println("P1 -> " + direction);
-		//System.out.println("P0 -> " + origin);
 		
 		this.direction = Util.substract(direction, origin);
-		//this.direction = direction;
 	}
 
 	@Override
@@ -31,4 +26,7 @@ public class Ray {
 		return Util.add(position, Util.dotScalar(direction, lambda));
 	}
 	
+	public void inverseDirection() {
+		direction = Util.inverse(direction);
+	}
 }

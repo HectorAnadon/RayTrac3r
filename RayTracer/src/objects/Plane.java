@@ -51,8 +51,9 @@ public class Plane extends Shape{
 			if (dn < 0) {
 				Vector3d intersection = ray.getPoint(d);	
 				double escalar = 2*Util.dotProduct(ray.direction, normal);
-				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
-				return new Ray(intersection, Util.inverse(direction));
+				Vector3d direction = Util.substract(Util.dotScalar(normal, escalar), ray.direction);
+				Ray rf = new Ray(intersection, direction);
+				return rf;
 			}
 			return null;
 			

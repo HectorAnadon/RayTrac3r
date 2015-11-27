@@ -25,7 +25,7 @@ public class Scene {
 	private static double ambientalLightI = 0;
 	
 	private static final int NUM_REFLECTED = 1;
-	private static final int NUM_ALIASING = 15;
+	private static final int NUM_ALIASING = 5;
 	private static final boolean ALIASING = true;
 	
 	
@@ -70,7 +70,14 @@ public class Scene {
 		p4.setKr(0);
 		objects.add(p4);
 		
-		objects.add(new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200)));
+		Sphere s1 = new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200));
+		s1.setKr(1);
+		objects.add(s1);
+		
+		Triangle t1 = new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200));
+		t1.setKr(0);
+		objects.add(t1);
+		
 		
 //		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
 //		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
@@ -195,9 +202,8 @@ public class Scene {
 						//Ray from object in the middle
 						Ray rReflected2 = obj2.intersection(rLight);
 						//sometimes intersections it shouldnt
-						if (rReflected2 != null && 
-								(Util.distance(rReflected2.position, l.getPosition()))
-								< Util.distance(rReflected.position, l.getPosition())) {
+						if (rReflected2 != null &&
+								(between(rReflected2.position, l.getPosition(),rReflected.position))) {
 							/*System.out.println("position object: " + rReflected.position);
 							System.out.println("position in the middle:" + rReflected2.position);
 							System.out.println("position light: "+l.getPosition());
@@ -212,6 +218,8 @@ public class Scene {
 					//TODO: error with rLightReflected with plane. I think normal should be inverse only for these case
 					Ray rLightReflected = object.intersection(rLight);
 					if (rLightReflected != null) {
+//						rLightReflected.inverseDirection();
+//						rLight.inverseDirection();
 						Color especular = object.getColor(l.getIntensity(),rLight,rLightReflected,r);
 						imgColor = normalizeColor(imgColor, especular);
 						//Test especular
@@ -229,7 +237,8 @@ public class Scene {
 			// Color reflected
 			if (raysReaming > 0) {
 //				reflectedColor = traceRay(rReflected, raysReaming - 1);
-				reflectedColor = traceRay(new Ray(rReflected.position, Util.inverse(rReflected.direction)), raysReaming - 1);
+				rReflected.inverseDirection();
+				reflectedColor = traceRay(new Ray(rReflected.position, rReflected.direction), raysReaming - 1);
 				if (reflectedColor != null) {
 					reflectedColor = new Color((int) (object.kr*reflectedColor.getRed()), 
 							(int) (object.kr*reflectedColor.getGreen()), (int) (object.kr*reflectedColor.getBlue()));
@@ -246,4 +255,11 @@ public class Scene {
 		return imgColor;
 
 	}
+	
+	private static boolean between(Vector3d b, Vector3d a, Vector3d c) {
+		if (Util.distance(a, b) + Util.distance(c, b) == Util.distance(a, c))
+		    return true;
+		return false;
+	}
+	
 }
