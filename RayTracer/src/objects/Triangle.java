@@ -26,7 +26,7 @@ public class Triangle extends Shape{
 		r = c.getRed();
 		g = c.getGreen();
 		b = c.getBlue();
-		n = Util.inverse(Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1)));
+		n = Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1));
 //		System.out.println("normal " +n);
 	}
 	
@@ -107,23 +107,24 @@ public class Triangle extends Shape{
 		if (cos > 0) {
 			return new Color((int) (cos*i*kd*r),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
 		} else {
+			Vector3d normal = Util.inverse(n);
+			cos = Util.dotProduct(l.direction, normal)/
+					(Util.Norm(l.direction)*Util.Norm(normal));
+			if (cos > 0) {
+				return new Color((int) (cos*i*kd*r),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
+			}
 			return new Color(0,0,0);
 		}
 	}
 	
 	public Color getColor(double i, Ray l, Ray rLight, Ray vision) {
-		Double cosLight = Util.dotProduct(l.direction, n)/
-				(Util.Norm(l.direction)*Util.Norm(n));
-		if (cosLight > 0) {
-			int n = 100;
-			Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/
-					(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
-			if (cos > 0) {
-				return new Color((int) (cos*i*ks*r),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
-			} 
-		}
+		int n = 150;
+		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/
+				(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
+		if (cos > 0) {
+			return new Color((int) (cos*i*ks*r),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
+		} 
 		return new Color(0,0,0);
-		
 	}
 	
 	
