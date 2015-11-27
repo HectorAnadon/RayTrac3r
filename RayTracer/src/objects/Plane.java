@@ -103,11 +103,5 @@ public class Plane extends Shape{
 		Vector3d R = Util.substract(V, Util.dotScalar(N, 2*Util.dotProduct(V, N)));
 		return new Ray(intersection, R);
 	}
-	
-	
-	public void setKr(double kr) {
-		this.kr = kr;
-	}
-
 
 }

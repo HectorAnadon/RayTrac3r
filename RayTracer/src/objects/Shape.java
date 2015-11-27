@@ -19,7 +19,7 @@ public abstract class Shape {
 	public double kr = 0;		// Specular reflection coefficient
 	public double kt = ks;		// Specular transmission coefficient
 
-	protected double opaque = 1.0;
+	public double opaque = 1.0;
 
 	
 	public abstract void transformation (Matrix4d trans);
@@ -35,5 +35,15 @@ public abstract class Shape {
 	public abstract Color getColor(double i, Ray l, Ray rLight, Ray vision);
 	
 	public abstract Ray getReflectedRay(Ray originRay, Vector3d intersection);
+	
+	
+	public void setKr(double kr) {
+		this.kr = kr;
+	}
+	
+	public void setOpaque(double opaque) {
+		this.opaque = opaque;
+	}
+
 
 }

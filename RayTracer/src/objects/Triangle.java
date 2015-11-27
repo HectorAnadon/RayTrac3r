@@ -128,7 +128,4 @@ public class Triangle extends Shape{
 		return new Ray(intersection, R);
 	}
 	
-	public void setKr(double kr) {
-		this.kr = kr;
-	}
 }
