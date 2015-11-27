@@ -25,7 +25,7 @@ public class Scene {
 	private static double ambientalLightI = 0;
 	
 	private static final int NUM_REFLECTED = 1;
-	private static final int NUM_ALIASING = 18;
+	private static final int NUM_ALIASING = 25;
 	private static final boolean ALIASING = true;
 	
 	
@@ -62,7 +62,7 @@ public class Scene {
 		p2.setKr(0);
 		objects.add(p2);
 		
-		Plane p3 = new Plane(new Vector3d(50,0,0), new Vector3d(-1,0,0), 1.0, new Color(255,0,0));
+		Plane p3 = new Plane(new Vector3d(50,0,0), new Vector3d(-1,0,0), 1.0, new Color(255,150,0));
 		p3.setKr(0);
 		objects.add(p3);
 		
@@ -70,9 +70,13 @@ public class Scene {
 		p4.setKr(0);
 		objects.add(p4);
 
-		Sphere sphere = new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200));
+		Sphere sphere = new Sphere(new Vector3d(7,0,0), 5, 1, new Color(0,200,200));
 		sphere.setKr(0.9);
 		objects.add(sphere);
+		
+		Triangle t2= new Triangle(new Vector3d(13,-5,-5), new Vector3d(10,-5,5), new Vector3d(10,0,0), 1.0, new Color(255,255,255));
+		t2.setKr(0.9);
+		objects.add(t2);
 		
 //		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
 //		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
@@ -230,7 +234,7 @@ public class Scene {
 			
 			
 			// Color reflected
-			if (raysReaming > 0) {
+			if (raysReaming > 0 && object.kr > 0) {
 //				reflectedColor = traceRay(rReflected, raysReaming - 1);
 				rReflected.inverseDirection();
 				reflectedColor = traceRay(new Ray(rReflected.position, rReflected.direction), raysReaming - 1);
