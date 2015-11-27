@@ -57,11 +57,15 @@ public class Triangle extends Shape{
 			if (dn < 0 && contains(intersection)) {
 				double escalar = 2*Util.dotProduct(ray.direction, normal);
 				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
-				return new Ray(intersection, Util.inverse(direction));
+				return new Ray(intersection, Util.inverse(direction), getIntensity(ray));
 			} else {
 				return null;
 			}
 		}
+	}
+	
+	private double getIntensity(Ray ray) {
+		return (ray.intensity*kr);
 	}
 
 
@@ -89,20 +93,20 @@ public class Triangle extends Shape{
 	}
 	
 	public Color getColor(double i) {
-		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
+		return new Color((int) (i*kd*r*opaque),(int) (i*kd*g*opaque),(int) (i*kd*b*opaque));
 	}
 	
 	public Color getColor(double i, Ray l) {
 		Double cos = Util.dotProduct(l.direction, n)/
 				(Util.Norm(l.direction)*Util.Norm(n));
 		if (cos > 0) {
-			return new Color((int) (cos*i*kd*r),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
+			return new Color((int) (cos*i*kd*r*opaque),(int) (cos*i*kd*g*opaque),(int) (cos*i*kd*b*opaque));
 		} else {
 			Vector3d normal = Util.inverse(n);
 			cos = Util.dotProduct(l.direction, normal)/
 					(Util.Norm(l.direction)*Util.Norm(normal));
 			if (cos > 0) {
-				return new Color((int) (cos*i*kd*r),(int) (cos*i*kd*g),(int) (cos*i*kd*b));
+				return new Color((int) (cos*i*kd*r*opaque),(int) (cos*i*kd*g*opaque),(int) (cos*i*kd*b*opaque));
 			}
 			return new Color(0,0,0);
 		}
@@ -113,19 +117,9 @@ public class Triangle extends Shape{
 		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/
 				(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
 		if (cos > 0) {
-			return new Color((int) (cos*i*ks*r),(int) (cos*i*ks*g),(int) (cos*i*ks*b));
+			return new Color((int) (cos*i*ks*r*opaque),(int) (cos*i*ks*g*opaque),(int) (cos*i*ks*b*opaque));
 		} 
 		return new Color(0,0,0);
-	}
-	
-	
-	public Ray getReflectedRay(Ray originRay, Vector3d intersection){
-		Vector3d V = new Vector3d(originRay.direction);
-		Vector3d N = new Vector3d(n);
-		
-		// R = V-2(V*N)N
-		Vector3d R = Util.substract(V, Util.dotScalar(N, 2*Util.dotProduct(V, N)));
-		return new Ray(intersection, R);
 	}
 	
 	public void setKr(double kr) {

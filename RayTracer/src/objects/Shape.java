@@ -33,7 +33,5 @@ public abstract class Shape {
 	public abstract Color getColor(double i, Ray l);
 	
 	public abstract Color getColor(double i, Ray l, Ray rLight, Ray vision);
-	
-	public abstract Ray getReflectedRay(Ray originRay, Vector3d intersection);
 
 }

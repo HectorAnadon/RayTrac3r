@@ -10,9 +10,11 @@ public class Ray {
 	/** Dirección del rayo (vector normalizado) */
 	public Vector3d direction;
 
-	public Ray(Vector3d origin, Vector3d direction) {
+	public double intensity = 1;
+	
+	public Ray(Vector3d origin, Vector3d direction, double intensity) {
 		this.position = origin;
-		
+		this.intensity = intensity;
 		this.direction = Util.substract(direction, origin);
 	}
 

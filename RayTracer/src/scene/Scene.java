@@ -25,7 +25,7 @@ public class Scene {
 	private static double ambientalLightI = 0.4;
 	
 	private static final int NUM_REFLECTED = 3;
-	private static final int NUM_ALIASING = 25;
+	private static final int NUM_ALIASING = 2;
 	private static final boolean ALIASING = true;
 	
 	
@@ -34,7 +34,7 @@ public class Scene {
 	
 	public static void main (String[] args) {
 		
-		ew = new Vector3d(-20,0,0);
+		ew = new Vector3d(0,0,0);
 		Camera c = new Camera(ew, new Vector3d(-1,0,0), 
 				new Vector3d(-1,1,0), new Vector3d(0,0,0));
 		
@@ -55,32 +55,18 @@ public class Scene {
 //		objects.add(new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255)));
 //		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(100,100,200)));
 		Plane p = new Plane(new Vector3d(0,0,20), new Vector3d(0,0,-1), 1.0, new Color(255,255,255));
-		p.setKr(0.8);
+		p.setKr(0.5);
 		objects.add(p);
 		
-		Plane p2 = new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255));
-		p2.setKr(0);
-//		objects.add(p2);
-		
-		Plane p3 = new Plane(new Vector3d(50,0,0), new Vector3d(-1,0,0), 1.0, new Color(255,150,0));
-		p3.setKr(0);
-		objects.add(p3);
-		
 		Plane p4 = new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(255,0,0));
-		p4.setKr(0);
+		p4.setKr(0.5);
 		objects.add(p4);
 
-		Sphere sphere = new Sphere(new Vector3d(7,0,0), 5, 1, new Color(0,200,200));
+		Sphere sphere = new Sphere(new Vector3d(7,0,0), 5, 0.5, new Color(0,200,200));
 		sphere.setKr(0.9);
 		objects.add(sphere);
 		
-		Sphere sphere2 = new Sphere(new Vector3d(7,5,0), 5, 1, new Color(0,255,0));
-		sphere2.setKr(0.9);
-		objects.add(sphere2);
-		
-		Triangle t2= new Triangle(new Vector3d(13,-20,-20), new Vector3d(10,-20,20), new Vector3d(60,0,0), 1.0, new Color(255,255,255));
-		t2.setKr(0.9);
-		objects.add(t2);
+
 		
 //		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
 //		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
@@ -125,7 +111,7 @@ public class Scene {
 				for (Vector4d v:points) { // For each points in the pixel (AntiAliasing)	
 					
 					//Ray from eye to pixel
-					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z));
+					Ray r = new Ray(c.getEw(), new Vector3d(v.x,v.y,v.z),1);
 					
 					Color currentColor = traceRay(r, NUM_REFLECTED);
 					if (currentColor != null) {
@@ -201,7 +187,7 @@ public class Scene {
 			
 			for (Light l:lights) {
 				//Ray from object to light
-				Ray rLight = new Ray(rReflected.position, l.getPosition());
+				Ray rLight = new Ray(rReflected.position, l.getPosition(),1);
 				boolean intersects = false;
 				for (Shape obj2:objects) {
 					if (!obj2.equals(object)){
@@ -214,19 +200,19 @@ public class Scene {
 							System.out.println("position in the middle:" + rReflected2.position);
 							System.out.println("position light: "+l.getPosition());
 							*/
-								intersects = true;								
+							intersects = true;								
 						}
 					}
 				}
 				if(!intersects) {		// Calculate color without shadow
-					Color difusa = object.getColor(l.getIntensity(),rLight);
+					Color difusa = object.getColor(r.intensity,rLight);
 					imgColor = normalizeColor(imgColor, difusa);
 					//TODO: error with rLightReflected with plane. I think normal should be inverse only for these case
 					Ray rLightReflected = object.intersection(rLight);
 					if (rLightReflected != null) {
 //						rLightReflected.inverseDirection();
 //						rLight.inverseDirection();
-						Color especular = object.getColor(l.getIntensity(),rLight,rLightReflected,r);
+						Color especular = object.getColor(r.intensity,rLight,rLightReflected,r);
 						imgColor = normalizeColor(imgColor, especular);
 						//Test especular
 						//imgColor =object.getColor(l.getIntensity(),rLight,rLightReflected,r);
@@ -244,7 +230,7 @@ public class Scene {
 			if (raysReaming > 0 && object.kr > 0) {
 //				reflectedColor = traceRay(rReflected, raysReaming - 1);
 				rReflected.inverseDirection();
-				reflectedColor = traceRay(new Ray(rReflected.position, rReflected.direction), raysReaming - 1);
+				reflectedColor = traceRay(new Ray(rReflected.position, rReflected.direction,rReflected.intensity), raysReaming - 1);
 				if (reflectedColor != null) {
 					reflectedColor = new Color((int) (object.kr*reflectedColor.getRed()), 
 							(int) (object.kr*reflectedColor.getGreen()), (int) (object.kr*reflectedColor.getBlue()));
