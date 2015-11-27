@@ -131,8 +131,5 @@ public class Sphere extends Shape{
 		return new Color(0,0,0);
 		
 	}
-	
-	public void setKr(double kr) {
-		this.kr = kr;
-	}
+
 }
