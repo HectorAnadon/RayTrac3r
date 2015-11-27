@@ -25,7 +25,7 @@ public class Scene {
 	private static double ambientalLightI = 0;
 	
 	private static final int NUM_REFLECTED = 1;
-	private static final int NUM_ALIASING = 25;
+	private static final int NUM_ALIASING = 5;
 	private static final boolean ALIASING = true;
 	
 	
@@ -34,7 +34,7 @@ public class Scene {
 	
 	public static void main (String[] args) {
 		
-		ew = new Vector3d(0,0,0);
+		ew = new Vector3d(-0,0,0);
 		Camera c = new Camera(ew, new Vector3d(-1,0,0), 
 				new Vector3d(-1,1,0), new Vector3d(0,0,0));
 		
@@ -60,7 +60,7 @@ public class Scene {
 		
 		Plane p2 = new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255));
 		p2.setKr(0);
-		objects.add(p2);
+//		objects.add(p2);
 		
 		Plane p3 = new Plane(new Vector3d(50,0,0), new Vector3d(-1,0,0), 1.0, new Color(255,150,0));
 		p3.setKr(0);
@@ -74,7 +74,11 @@ public class Scene {
 		sphere.setKr(0.9);
 		objects.add(sphere);
 		
-		Triangle t2= new Triangle(new Vector3d(13,-5,-5), new Vector3d(10,-5,5), new Vector3d(10,0,0), 1.0, new Color(255,255,255));
+		Sphere sphere2 = new Sphere(new Vector3d(7,5,0), 5, 1, new Color(255,0,0));
+		sphere2.setKr(0.9);
+		objects.add(sphere2);
+		
+		Triangle t2= new Triangle(new Vector3d(13,-20,-20), new Vector3d(10,-20,20), new Vector3d(60,0,0), 1.0, new Color(255,255,255));
 		t2.setKr(0.9);
 		objects.add(t2);
 		
