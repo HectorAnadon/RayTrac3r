@@ -52,13 +52,13 @@ public class Plane extends Shape{
 				Vector3d intersection = ray.getPoint(d);	
 				double escalar = 2*Util.dotProduct(ray.direction, normal);
 				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
-				return new Ray(intersection, direction);
+				return new Ray(intersection, Util.inverse(direction));
 			}
 			return null;
 			
 		}
 	}
-		
+			
 	
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*r),(int) (i*kd*g),(int) (i*kd*b));
@@ -104,7 +104,9 @@ public class Plane extends Shape{
 	}
 	
 	
-	public void setKr(int kr) {
+	public void setKr(double kr) {
 		this.kr = kr;
 	}
+
+
 }

@@ -16,7 +16,7 @@ public abstract class Shape {
 	protected double kd = 0.7;		// Diffuse coefficient
 	protected double ks = 0.3;
 	
-	public double kr = 1;		// Specular reflection coefficient
+	public double kr = 0;		// Specular reflection coefficient
 	public double kt = ks;		// Specular transmission coefficient
 
 	protected double opaque = 1.0;

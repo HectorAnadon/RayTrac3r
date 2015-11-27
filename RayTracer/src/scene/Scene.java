@@ -24,9 +24,9 @@ public class Scene {
 	private static final int numPixelY = 700;
 	private static double ambientalLightI = 0;
 	
-	private static final int NUM_REFLECTED = 0;
-	private static final int NUM_ALIASING = 6;
-	private static final boolean ALIASING = false;
+	private static final int NUM_REFLECTED = 1;
+	private static final int NUM_ALIASING = 15;
+	private static final boolean ALIASING = true;
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -52,13 +52,25 @@ public class Scene {
 
 //		objects.add(new Plane(new Vector3d(0,-5,0), new Vector3d(0,1,0), 1.0, new Color(0,200,0)));
 //		objects.add(new Plane(new Vector3d(0,10,0), new Vector3d(0,-1,0), 1.0, new Color(0,200,100)));
-		objects.add(new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255)));
+//		objects.add(new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255)));
 //		objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(100,100,200)));
 		Plane p = new Plane(new Vector3d(0,0,20), new Vector3d(0,0,-1), 1.0, new Color(255,255,255));
-		p.setKr(1);
+		p.setKr(0.8);
 		objects.add(p);
 		
-//		objects.add(new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200)));
+		Plane p2 = new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255));
+		p2.setKr(0);
+		objects.add(p2);
+		
+		Plane p3 = new Plane(new Vector3d(50,0,0), new Vector3d(-1,0,0), 1.0, new Color(255,0,0));
+		p3.setKr(0);
+		objects.add(p3);
+		
+		Plane p4 = new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(255,0,0));
+		p4.setKr(0);
+		objects.add(p4);
+		
+		objects.add(new Sphere(new Vector3d(10,0,0), 5, 1, new Color(0,200,200)));
 		
 //		Sphere a = new Sphere(new Vector3d(-3,0,5), 3, 1, new Color(200,0,0));
 //		Sphere b = new Sphere(new Vector3d(-7,0,5), 0.4, 1, new Color(200,200,0));
@@ -184,13 +196,13 @@ public class Scene {
 						Ray rReflected2 = obj2.intersection(rLight);
 						//sometimes intersections it shouldnt
 						if (rReflected2 != null && 
-								(Util.distance(rReflected2.position, l.getPosition()) + Util.distance(rReflected.position, l.getPosition()))
+								(Util.distance(rReflected2.position, l.getPosition()))
 								< Util.distance(rReflected.position, l.getPosition())) {
 							/*System.out.println("position object: " + rReflected.position);
 							System.out.println("position in the middle:" + rReflected2.position);
 							System.out.println("position light: "+l.getPosition());
 							*/
-							intersects = true;
+								intersects = true;								
 						}
 					}
 				}
@@ -216,11 +228,14 @@ public class Scene {
 			
 			// Color reflected
 			if (raysReaming > 0) {
-				reflectedColor = traceRay(rReflected, raysReaming - 1);
+//				reflectedColor = traceRay(rReflected, raysReaming - 1);
+				reflectedColor = traceRay(new Ray(rReflected.position, Util.inverse(rReflected.direction)), raysReaming - 1);
 				if (reflectedColor != null) {
-					reflectedColor = new Color((int) object.kr*reflectedColor.getRed(), 
-							(int) object.kr*reflectedColor.getGreen(), (int) object.kr*reflectedColor.getBlue());
+					reflectedColor = new Color((int) (object.kr*reflectedColor.getRed()), 
+							(int) (object.kr*reflectedColor.getGreen()), (int) (object.kr*reflectedColor.getBlue()));
 					imgColor = normalizeColor(imgColor, reflectedColor);
+				}
+				else {
 					raysReaming = 0;
 				}
 			}
