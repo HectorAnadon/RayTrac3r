@@ -232,7 +232,7 @@ public class Scene {
 
 	//Is b between a and c?
 	private static boolean between(Vector3d b, Vector3d a, Vector3d c) {
-		if (Util.distance(a, b) + Util.distance(c, b) == Util.distance(a, c))
+		if (Math.floor((Util.distance(a, b) + Util.distance(c, b))*100)/100 == Math.floor(Util.distance(a, c)*100)/100)
 		    return true;
 		return false;
 	}
