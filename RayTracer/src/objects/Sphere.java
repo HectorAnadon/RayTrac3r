@@ -90,19 +90,25 @@ public class Sphere extends Shape{
 	
 	public Ray getRefraction (Ray ray, Vector3d intersection) {
 		Vector3d normal = Util.substract(intersection, c);
-		Vector3d dir = ray.direction;
+		Vector3d dir = new Vector3d(ray.direction);
 		double nDotI = Util.dotProduct(normal, dir);
-		
 		double square = 1 - (Math.pow(1/kn, 2) * (1 - Math.pow(nDotI, 2)));
+		if (kn == 1) {
+			return new Ray(ray.position, ray.direction, getRefractedIntensity(ray),true);
+		}
 		if (square >= 0) {
 			double t = (1/kn * nDotI) - Math.sqrt(square);
 			normal.scale(t);
 			dir.scale(1/kn);
 			normal.sub(dir);
-			return new Ray(intersection, normal, getIntensity(ray), true);
+			return new Ray(intersection, normal, getRefractedIntensity(ray), true);
 		} else {
 			return intersection(ray);
 		}
+	}
+	
+	private double getRefractedIntensity(Ray ray) {
+		return (ray.intensity*(1-opaque));
 	}
 	
 	private double getIntensity(Ray ray) {

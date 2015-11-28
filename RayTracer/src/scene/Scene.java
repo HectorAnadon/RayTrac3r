@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4d;
@@ -22,11 +23,11 @@ public class Scene {
 
 	private static final int numPixelX = 800;
 	private static final int numPixelY = 800;
-	private static double ambientalLightI = 0;
+	private static double ambientalLightI = 0.3;
 	
-	private static final int NUM_REFLECTED = 0;
-	private static final int NUM_REFRACTED = 1;
-	private static final int NUM_ALIASING = 25;
+	private static final int NUM_REFLECTED = 5;
+	private static final int NUM_REFRACTED = 5;
+	private static final int NUM_ALIASING = 15;
 	private static final boolean ALIASING = true;
 	
 	
@@ -213,7 +214,7 @@ public class Scene {
 			}
 		
 			if (raysRefractedReaming > 0 && object.opaque < 1) {
-				refractedColor = traceRay(r, raysReflectedReaming, raysRefractedReaming -1, toIgnore);
+				refractedColor = traceRay(object.getRefraction(r, rReflected.position), raysReflectedReaming, raysRefractedReaming -1, toIgnore);
 				if (refractedColor != null) {
 					refractedColor = new Color((int) (refractedColor.getRed()), 
 							(int) (refractedColor.getGreen()), (int) (refractedColor.getBlue()));
@@ -240,7 +241,7 @@ public class Scene {
 	
 	public static void scene1() {
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
-		Light light = new Light(new Vector3d(0,0,0), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(0,-2,0), new Vector3d(2, 0 , 0));
 		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		lights.add(light);
 
@@ -267,17 +268,24 @@ public class Scene {
 		p4.setKr(0);
 		objects.add(p4);
 
-		Sphere sphere = new Sphere(new Vector3d(7,0,0), 5, 1, new Color(0,200,200));
+		Sphere sphere = new Sphere(new Vector3d(0,0,0), 5, 1, new Color(0,200,200));
+		sphere.transformation(new Matrix4d(1,0,0,0,
+				0,1,0,0,
+				0,0,1,0,
+				7,0,0,1));
 		sphere.setKr(0);
-		sphere.setOpaque(0.5);
+		sphere.setOpaque(0.3);
+		sphere.setKn(1.3);
 		objects.add(sphere);
 		
 		Sphere sphere2 = new Sphere(new Vector3d(7,5,0), 5, 1, new Color(0,255,0));
 		sphere2.setKr(0.9);
 		objects.add(sphere2);
 		
-		Triangle t2= new Triangle(new Vector3d(13,-20,-20), new Vector3d(10,-20,20), new Vector3d(60,0,0), 1.0, new Color(255,255,255));
-		t2.setKr(0.9);
+		Triangle t2= new Triangle(new Vector3d(13,-20,-20), new Vector3d(10,-20,20), new Vector3d(60,0,0), 1.0, new Color(0,0,255));
+		t2.setOpaque(0.2);
+		t2.setKn(1);
+		t2.setKr(0);
 		objects.add(t2);
 	}
 	
