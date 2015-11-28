@@ -60,6 +60,23 @@ public class Plane extends Shape{
 		}
 	}
 	
+	public Ray getRefraction (Ray ray, Vector3d intersection) {
+		Vector3d normal = n;
+		Vector3d dir = ray.direction;
+		double nDotI = Util.dotProduct(normal, dir);
+		
+		double square = 1 - (Math.pow(1/kn, 2) * (1 - Math.pow(nDotI, 2)));
+		if (square >= 0) {
+			double t = (1/kn * nDotI) - Math.sqrt(square);
+			normal.scale(t);
+			dir.scale(1/kn);
+			normal.sub(dir);
+			return new Ray(intersection, normal, getIntensity(ray), true);
+		} else {
+			return intersection(ray);
+		}
+	}
+	
 	private double getIntensity(Ray ray) {
 		return (ray.intensity*kr);
 	}

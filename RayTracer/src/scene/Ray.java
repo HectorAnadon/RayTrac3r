@@ -17,6 +17,12 @@ public class Ray {
 		this.intensity = intensity;
 		this.direction = Util.substract(direction, origin);
 	}
+	
+	public Ray(Vector3d origin, Vector3d direction, double intensity, boolean isDirection) {
+		this.position = origin;
+		this.intensity = intensity;
+		this.direction = direction;
+	}
 
 	@Override
 	public String toString() {

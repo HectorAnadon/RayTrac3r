@@ -14,10 +14,10 @@ public abstract class Shape {
 	protected int b;
 
 	protected double kd = 0.7;		// Diffuse coefficient
-	protected double ks = 0.3;
+	protected double ks = 0.3;		// Specular coefficient
 	
-	public double kr = 0;		// Specular reflection coefficient
-	public double kt = ks;		// Specular transmission coefficient
+	public double kr = 0;		// reflection coefficient
+	public double kn = 1;		// Refraction coefficient
 
 	public double opaque = 1.0;
 
@@ -38,8 +38,14 @@ public abstract class Shape {
 		this.kr = kr;
 	}
 	
+	public void setKn(double kn) {
+		this.kn = kn;
+	}
+	
 	public void setOpaque(double opaque) {
 		this.opaque = opaque;
 	}
+	
+	public abstract Ray getRefraction (Ray vector, Vector3d intersection);
 
 }
