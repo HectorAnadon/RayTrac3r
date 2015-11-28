@@ -28,10 +28,13 @@ public abstract class Shape {
 	//Returns the reflected ray or null if does not intersect
 	public abstract Ray intersection (Ray vector);
 	
+	//Ambiental color
 	public abstract Color getColor(double i);
 	
+	//Diffuse color
 	public abstract Color getColor(double i, Ray l);
 	
+	//Specular color
 	public abstract Color getColor(double i, Ray l, Ray rLight, Ray vision);
 	
 	public void setKr(double kr) {
