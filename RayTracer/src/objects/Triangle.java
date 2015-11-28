@@ -40,6 +40,7 @@ public class Triangle extends Shape{
 		Vector4d p3Prov = new Vector4d(p3.x, p3.y, p3.z, 1);
 		p3Prov = Util.MultiplyVectorAndMatrix(trans, p3Prov);
 		p3 = new Vector3d(p3Prov.x/p3Prov.w, p3Prov.y/p3Prov.w, p3Prov.z/p3Prov.w);
+		n = Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1));
 	}
 	
 	//Returns the reflected ray or null if does not intersect
