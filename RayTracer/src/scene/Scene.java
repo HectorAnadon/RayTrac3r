@@ -241,7 +241,7 @@ public class Scene {
 	
 	public static void scene1() {
 		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
-		Light light = new Light(new Vector3d(0,-2,0), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(0,-2,0));
 		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		lights.add(light);
 
@@ -291,7 +291,7 @@ public class Scene {
 	
 	
 	public static void scene2() {
-		Light light = new Light(new Vector3d(-5,0,0), new Vector3d(2, 0 , 0));
+		Light light = new Light(new Vector3d(-5,0,0));
 		lights.add(light);
 		
 		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
