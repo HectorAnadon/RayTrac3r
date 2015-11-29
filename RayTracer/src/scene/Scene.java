@@ -27,14 +27,16 @@ public class Scene {
 	private static double distanceScreen;
 	private static Screen s;
 
-	private static final int numPixelX = 400;
-	private static final int numPixelY = 400;
-	private static double ambientalLightI = 0;
-	private static boolean SAVE_IMAGE = false;
-	private static final int NUM_REFLECTED = 0;
+	private static final int numPixelX = 700;
+	private static final int numPixelY = 700;
+	private static double ambientalLightI = 0.1;
+	private static final int NUM_REFLECTED = 1;
 	private static final int NUM_REFRACTED = 0;
-	private static final int NUM_ALIASING = 15;
-	private static final boolean ALIASING = false;
+	private static final int NUM_ALIASING = 5;
+	private static final boolean ALIASING = true;
+	
+	private static boolean SAVE_IMAGE = true;
+	private static final String NAME_IMAGE = "dinosaur1.jpg";
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -42,7 +44,7 @@ public class Scene {
 	
 	public static void main (String[] args) throws IOException {
 				
-		scene1();
+		scene3();
 
 		int progress = 1;
 		int currentProgress = 1;
@@ -102,8 +104,9 @@ public class Scene {
 		}
 		
 		if (SAVE_IMAGE) {
-			File outputfile = new File("image1.jpg");
+			File outputfile = new File(NAME_IMAGE);
 			ImageIO.write(image, "jpg", outputfile);
+			Render render = new Render(image);
 		}
 		else {
 			Render render = new Render(image);
@@ -161,7 +164,7 @@ public class Scene {
 	
 	
 	public static void scene2() {
-		ew = new Vector3d(-2,0,0);
+		ew = new Vector3d(-2,0.5,0);
 		c = new Camera(ew, new Vector3d(-1,0,0), 
 				new Vector3d(-1,1,0), new Vector3d(0,0,0));
 		distanceScreen = -2;
@@ -170,6 +173,10 @@ public class Scene {
 		Light light = new Light(new Vector3d(-5,0,0));
 		lights.add(light);
 		
+		Matrix4d mat = new Matrix4d(-0.642,0,-0.766,0,
+									0,1,0,0,
+									0.766,0,-0.642,0,
+									0,0,0,0.6);
 		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
 		objects.addAll(m.getTriangles());
 		
@@ -197,6 +204,31 @@ public class Scene {
 		p5.setKr(0);
 		objects.add(p5);
 		
+		
+	}
+	
+	public static void scene3() {
+		ew = new Vector3d(-230,-5,50);
+		c = new Camera(ew, new Vector3d(-1,-0.0,-0.0), 
+				new Vector3d(-1,0.5,0), new Vector3d(0,0,0));
+		distanceScreen = -20;
+		s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
+		
+		Light light = new Light(new Vector3d(-200,5,40));
+		lights.add(light);
+		
+		Matrix4d mat = new Matrix4d(0.906,0,-0.422,0,
+									0,1,0,0,
+									0.422,0,0.906,0,
+									0,0,0,1);
+		Model m = new Model("objects/dinosaur_OBJ/dinosaur.obj", "", mat);
+		m.setKr(0.2);
+		objects.addAll(m.createTriangles());
+		
+		Plane p1 = new Plane(new Vector3d(0,-21.07,0), new Vector3d(0,1,0), 1.0, new Color(0,200,0));
+		p1.setKr(0.2);
+		objects.add(p1);
+
 		
 	}
 
