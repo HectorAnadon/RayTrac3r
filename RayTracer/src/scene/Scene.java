@@ -2,8 +2,11 @@ package scene;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -20,32 +23,26 @@ public class Scene {
 	private static ArrayList<Shape> objects = new ArrayList<Shape>();
 	private static ArrayList<Light> lights = new ArrayList<Light>();
 	private static Vector3d ew;
+	private static Camera c;
+	private static double distanceScreen;
+	private static Screen s;
 
-	private static final int numPixelX = 800;
-	private static final int numPixelY = 800;
-	private static double ambientalLightI = 0.3;
-	
-	private static final int NUM_REFLECTED = 5;
-	private static final int NUM_REFRACTED = 5;
+	private static final int numPixelX = 400;
+	private static final int numPixelY = 400;
+	private static double ambientalLightI = 0;
+	private static boolean SAVE_IMAGE = false;
+	private static final int NUM_REFLECTED = 0;
+	private static final int NUM_REFRACTED = 0;
 	private static final int NUM_ALIASING = 15;
-	private static final boolean ALIASING = true;
+	private static final boolean ALIASING = false;
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
 	
 	
-	public static void main (String[] args) {
-		
-		ew = new Vector3d(-4,0,0);
-		Camera c = new Camera(ew, new Vector3d(-1,0,0), 
-				new Vector3d(-1,1,0), new Vector3d(0,0,0));
-		
-		double distanceScreen = -3;
-		System.out.println("Screen distance: " + distanceScreen + "\n\n");
-		Screen s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
-
-	
-		scene1();
+	public static void main (String[] args) throws IOException {
+				
+		scene2();
 
 		int progress = 1;
 		int currentProgress = 1;
@@ -103,7 +100,13 @@ public class Scene {
 			progress ++;
 		}
 		
-		Render render = new Render(image);
+		if (SAVE_IMAGE) {
+			File outputfile = new File("image1.jpg");
+			ImageIO.write(image, "jpg", outputfile);
+		}
+		else {
+			Render render = new Render(image);
+		}
 		
 	}
 
@@ -240,17 +243,15 @@ public class Scene {
 	
 	
 	public static void scene1() {
-		//Light light = new Light(new Vector3d(0,0,10), new Vector3d(0, 0 , 2));
+		ew = new Vector3d(-4,0,0);
+		c = new Camera(ew, new Vector3d(-1,0,0), 
+				new Vector3d(-1,1,0), new Vector3d(0,0,0));
+		distanceScreen = -3;
+		s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
+		
 		Light light = new Light(new Vector3d(0,-2,0));
-		//objects.add(new Plane(new Vector3d(-9,0,5), new Vector3d(-9,0,5), 1.0));
 		lights.add(light);
 
-//				objects.add(new Triangle(new Vector3d(13,-5,5), new Vector3d(10,-5,-5), new Vector3d(10,0,0), 1.0, new Color(255,255,255)));
-
-//				objects.add(new Plane(new Vector3d(0,-5,0), new Vector3d(0,1,0), 1.0, new Color(0,200,0)));
-//				objects.add(new Plane(new Vector3d(0,10,0), new Vector3d(0,-1,0), 1.0, new Color(0,200,100)));
-//				objects.add(new Plane(new Vector3d(0,-10,0), new Vector3d(0,1,0), 1.0, new Color(0,0,255)));
-//				objects.add(new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(100,100,200)));
 		Plane p = new Plane(new Vector3d(0,0,20), new Vector3d(0,0,-1), 1.0, new Color(255,255,255));
 		p.setKr(0.8);
 		objects.add(p);
@@ -291,6 +292,12 @@ public class Scene {
 	
 	
 	public static void scene2() {
+		ew = new Vector3d(-2,0,0);
+		c = new Camera(ew, new Vector3d(-1,0,0), 
+				new Vector3d(-1,1,0), new Vector3d(0,0,0));
+		distanceScreen = -2;
+		s = new Screen(c, distanceScreen, numPixelX, numPixelY, 10, 10);
+		
 		Light light = new Light(new Vector3d(-5,0,0));
 		lights.add(light);
 		
