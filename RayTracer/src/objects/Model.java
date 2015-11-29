@@ -38,6 +38,7 @@ public class Model {
 			isTextures = false;
 		}
 		else {
+			isTextures = true;
 			try {
 				textures = ImageIO.read(new File(texturesPath));
 			} catch (IOException e) {
@@ -60,6 +61,7 @@ public class Model {
 			isTextures = false;
 		}
 		else {
+			isTextures = true;
 			try {
 				textures = ImageIO.read(new File(texturesPath));
 				numPixelsX = textures.getWidth();
@@ -117,9 +119,8 @@ public class Model {
 					Vector3d p2 = new Vector3d(Double.parseDouble(x[0]), Double.parseDouble(z[0]),
 							Double.parseDouble(w[0]));
 
-//					int p1Color = (Integer.parseInt(x[1]) + Integer.parseInt(y[1]) + Integer.parseInt(z[1]))/3;
-//					int p2Color = (Integer.parseInt(x[1]) + Integer.parseInt(z[1]) + Integer.parseInt(w[1]))/3;
-
+					Color c1 = getMeanColor(getTextureColor(Integer.parseInt(x[1])-1), getTextureColor(Integer.parseInt(y[1])-1), getTextureColor(Integer.parseInt(z[1])-1));
+					Color c2 = getMeanColor(getTextureColor(Integer.parseInt(x[1])-1), getTextureColor(Integer.parseInt(z[1])-1), getTextureColor(Integer.parseInt(w[1])-1));
 					// TODO: obtener el color en función del punto de intersección del rayo con el triángulo
 						// Guardar las 3 coordenadas de color para cada triángulo
 					
@@ -129,9 +130,9 @@ public class Model {
 					Triangle t2;
 					if (isTextures) {
 						t1 = new Triangle(vertex.get((int) p1.x - 1), vertex.get((int) p1.y - 1),
-								vertex.get((int) p1.z - 1), 1, getTextureColor(Integer.parseInt(x[1])));
+								vertex.get((int) p1.z - 1), 1, c1);
 						t2 = new Triangle(vertex.get((int) p2.x - 1), vertex.get((int) p2.y - 1),
-								vertex.get((int) p2.z - 1), 1, getTextureColor(Integer.parseInt(x[1])));
+								vertex.get((int) p2.z - 1), 1, c2);
 					}
 					else {
 						t1 = new Triangle(vertex.get((int) p1.x - 1), vertex.get((int) p1.y - 1),
@@ -193,6 +194,11 @@ public class Model {
 		}
 		
 		return triangles;
+	}
+	
+	
+	private Color getMeanColor(Color c1, Color c2, Color c3) {
+		return new Color((c1.getRed()+c2.getRed()+c3.getRed())/3,(c1.getGreen()+c2.getGreen()+c3.getGreen())/3, (c1.getBlue()+c2.getBlue()+c3.getBlue())/3);
 	}
 
 	/**

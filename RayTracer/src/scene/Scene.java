@@ -27,16 +27,16 @@ public class Scene {
 	private static double distanceScreen;
 	private static Screen s;
 
-	private static final int numPixelX = 700;
-	private static final int numPixelY = 700;
+	private static final int numPixelX = 1024;
+	private static final int numPixelY = 1024;
 	private static double ambientalLightI = 0.1;
-	private static final int NUM_REFLECTED = 1;
+	private static final int NUM_REFLECTED = 5;
 	private static final int NUM_REFRACTED = 0;
-	private static final int NUM_ALIASING = 5;
+	private static final int NUM_ALIASING = 15;
 	private static final boolean ALIASING = true;
 	
 	private static boolean SAVE_IMAGE = true;
-	private static final String NAME_IMAGE = "dinosaur1.jpg";
+	private static final String NAME_IMAGE = "pistacho1.jpg";
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -44,7 +44,7 @@ public class Scene {
 	
 	public static void main (String[] args) throws IOException {
 				
-		scene3();
+		scene2();
 
 		int progress = 1;
 		int currentProgress = 1;
@@ -164,7 +164,7 @@ public class Scene {
 	
 	
 	public static void scene2() {
-		ew = new Vector3d(-2,0.5,0);
+		ew = new Vector3d(-3.5,1.3,0);
 		c = new Camera(ew, new Vector3d(-1,0,0), 
 				new Vector3d(-1,1,0), new Vector3d(0,0,0));
 		distanceScreen = -2;
@@ -173,36 +173,37 @@ public class Scene {
 		Light light = new Light(new Vector3d(-5,0,0));
 		lights.add(light);
 		
-		Matrix4d mat = new Matrix4d(-0.642,0,-0.766,0,
+		double angle = 250;
+		Matrix4d mat = new Matrix4d(Math.cos(angle),0,-Math.sin(angle),0,
 									0,1,0,0,
-									0.766,0,-0.642,0,
+									Math.sin(angle),0,Math.cos(angle),0,
 									0,0,0,0.6);
-		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg");
-		objects.addAll(m.getTriangles());
+		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg", mat);
+		objects.addAll(m.createTriangles());
 		
 		Sphere sphere = new Sphere(new Vector3d(2,0,0), 5, 1, new Color(0,0,200));
 		sphere.setKr(0.9);
 //		objects.add(sphere);
 		
-		Plane p1 = new Plane(new Vector3d(0,0,20), new Vector3d(0,0,-1), 1.0, new Color(255,255,255));
-		p1.setKr(0);
+		Plane p1 = new Plane(new Vector3d(0,-3.7,0), new Vector3d(-1,2,1), 1.0, new Color(255,255,255));
+		p1.setKr(0.9);
 		objects.add(p1);
 		
-		Plane p2 = new Plane(new Vector3d(0,0,-20), new Vector3d(0,0,1), 1.0, new Color(255,255,255));
-		p2.setKr(0);
+		Plane p2 = new Plane(new Vector3d(0,-3.7,0), new Vector3d(-1,2,-1), 1.0, new Color(255,0,255));
+		p2.setKr(0.9);
 		objects.add(p2);
 		
-		Plane p3 = new Plane(new Vector3d(0,-20,0), new Vector3d(0,1,0), 1.0, new Color(255,255,255));
-		p3.setKr(0);
+		Plane p3 = new Plane(new Vector3d(0,6.3,0), new Vector3d(-1,-2,1), 1.0, new Color(0,255,255));
+		p3.setKr(0.9);
 		objects.add(p3);
 		
-		Plane p4 = new Plane(new Vector3d(0,20,0), new Vector3d(0,-1,0), 1.0, new Color(255,255,255));
-		p4.setKr(0);
+		Plane p4 = new Plane(new Vector3d(0,6.3,0), new Vector3d(-1,-2,-1), 1.0, new Color(255,255,0));
+		p4.setKr(0.9);
 		objects.add(p4);
 
 		Plane p5 = new Plane(new Vector3d(5,0,0), new Vector3d(-1,0,0), 1.0, new Color(255,255,255));
 		p5.setKr(0);
-		objects.add(p5);
+//		objects.add(p5);
 		
 		
 	}
