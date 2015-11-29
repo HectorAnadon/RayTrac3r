@@ -64,6 +64,7 @@ public class RayTracer {
 				//Ray from object to light
 				Ray rLight = new Ray(rReflected.position, l.getPosition(),1);
 				boolean intersects = false;
+				double shadowOpacity = 0.0;
 				for (Shape obj2:objects) {
 					if (!obj2.equals(object)){
 						//Ray from object in the middle
@@ -75,7 +76,10 @@ public class RayTracer {
 							System.out.println("position in the middle:" + rReflected2.position);
 							System.out.println("position light: "+l.getPosition());
 							*/
-							intersects = true;								
+							intersects = true;
+							if (obj2.opaque > shadowOpacity) {
+								shadowOpacity = obj2.opaque;
+							}
 						}
 					}
 				}
@@ -95,6 +99,11 @@ public class RayTracer {
 					}
 					//Test difuso
 					//imgColor =object.getColor(l.getIntensity(),rLight);
+				} else {
+					if (shadowOpacity < 1.0) {
+						Color shadow = object.getColor(r.intensity*(1-shadowOpacity),rLight);
+						imgColor = normalizeColor(imgColor, shadow);
+					}
 				}
 			}		// End of lights
 			
