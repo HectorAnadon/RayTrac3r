@@ -107,6 +107,19 @@ public class RayTracer {
 				}
 			}		// End of lights
 			
+
+			if (raysRefractedReaming > 0 && object.opaque < 1) {
+				refractedColor = traceRay(object.getRefraction(r, rReflected.position), objects, lights, ambientalLightI, ew,
+						raysReflectedReaming, raysRefractedReaming -1, maxReflected, toIgnore);
+				if (refractedColor != null) {
+					refractedColor = new Color((int) (refractedColor.getRed()), 
+							(int) (refractedColor.getGreen()), (int) (refractedColor.getBlue()));
+					imgColor = normalizeColor(imgColor, refractedColor);
+				}
+				else {
+					raysRefractedReaming = 0;
+				}
+			}
 			
 			// Color reflected
 			if (raysReflectedReaming > 0 && object.kr > 0) {
@@ -125,18 +138,6 @@ public class RayTracer {
 				}
 			}
 		
-			if (raysRefractedReaming > 0 && object.opaque < 1) {
-				refractedColor = traceRay(object.getRefraction(r, rReflected.position), objects, lights, ambientalLightI, ew,
-						raysReflectedReaming, raysRefractedReaming -1, maxReflected, toIgnore);
-				if (refractedColor != null) {
-					refractedColor = new Color((int) (refractedColor.getRed()), 
-							(int) (refractedColor.getGreen()), (int) (refractedColor.getBlue()));
-					imgColor = normalizeColor(imgColor, refractedColor);
-				}
-				else {
-					raysRefractedReaming = 0;
-				}
-			}
 			
 		}	// End of object != null
 		

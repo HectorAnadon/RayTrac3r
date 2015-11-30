@@ -62,7 +62,7 @@ public class Triangle extends Shape{
 			if (dn < 0 && contains(intersection)) {
 				double escalar = 2*Util.dotProduct(ray.direction, normal);
 				Vector3d direction = Util.substract(ray.direction, Util.dotScalar(normal, escalar));
-				return new Ray(intersection, direction, getIntensity(ray), true);
+				return new Ray(intersection, Util.inverse(direction), getIntensity(ray), true);
 			} else {
 				return null;
 			}

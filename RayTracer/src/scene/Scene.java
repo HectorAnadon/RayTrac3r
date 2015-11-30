@@ -27,16 +27,16 @@ public class Scene {
 	private static double distanceScreen;
 	private static Screen s;
 
-	private static final int numPixelX = 1024;
-	private static final int numPixelY = 1024;
+	private static final int numPixelX = 300;
+	private static final int numPixelY = 300;
 	private static double ambientalLightI = 0.1;
-	private static final int NUM_REFLECTED = 5;
+	private static final int NUM_REFLECTED = 2;
 	private static final int NUM_REFRACTED = 0;
-	private static final int NUM_ALIASING = 15;
-	private static final boolean ALIASING = true;
+	private static final int NUM_ALIASING = 8;
+	private static final boolean ALIASING = false;
 	
 	private static boolean SAVE_IMAGE = true;
-	private static final String NAME_IMAGE = "pistacho1.jpg";
+	private static final String NAME_IMAGE = "dinosaur2.jpg";
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -158,7 +158,7 @@ public class Scene {
 		Triangle t2= new Triangle(new Vector3d(13,-20,-20), new Vector3d(10,-20,20), new Vector3d(60,0,0), 1.0, new Color(0,0,255));
 		t2.setOpaque(0.2);
 		t2.setKn(1);
-		t2.setKr(0);
+		t2.setKr(0.5);
 		objects.add(t2);
 	}
 	
