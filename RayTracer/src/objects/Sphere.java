@@ -70,19 +70,19 @@ public class Sphere extends Shape{
 			}
 			else if (lambda1 > 0 && lambda2 < 0) {	// Return lambda1
 				Vector3d intersection = ray.getPoint(lambda1);
-				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray), true);
 			} 
 			else if (lambda1 > lambda2 && lambda2 > 0) {	// Return lambda2
 				Vector3d intersection = ray.getPoint(lambda2);
-				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray), true);
 			} 
 			else if (lambda1 < 0 && lambda2 > 0) {	// Return lambda2
 				Vector3d intersection = ray.getPoint(lambda2);
-				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray), true);
 			} 
 			else {							// Return lambda1
 				Vector3d intersection = ray.getPoint(lambda1);
-				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray));
+				return new Ray(intersection, Util.inverse(direction(ray, intersection)), getIntensity(ray), true);
 			}
 		}
 		
