@@ -257,10 +257,21 @@ public class Scene {
 		Plane p3 = new Plane(new Vector3d(0,0,0), new Vector3d(1,0,0), 1.0, new Color(0,255,255));
 		objects.add(p3);
 		
-		
-		Sphere sphere1 = new Sphere(new Vector3d(15,4,8), 4, 1, new Color(0,255,0));
+
+		Sphere sphere1 = new Sphere(new Vector3d(15,4,8), 8, 1, new Color(0,255,0));
 		objects.add(sphere1);
+
+		Sphere sphere2 = new Sphere(new Vector3d(23,4,8), 8, 1, new Color(0,255,0));
+		objects.add(sphere2);
+
+		Sphere sphere3 = new Sphere(new Vector3d(30,4,8), 8, 1, new Color(0,255,0));
+		objects.add(sphere3);
 		
+		Sphere sphere4 = new Sphere(new Vector3d(15,4,18), 8, 1, new Color(0,255,0));
+		objects.add(sphere4);
+
+		Sphere sphere5 = new Sphere(new Vector3d(23,4,18), 8, 1, new Color(0,255,0));
+		objects.add(sphere5);
 	}
 	
 }
