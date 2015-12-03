@@ -30,8 +30,8 @@ public class Scene {
 	private static int numPixelX = 1400;
 	private static int numPixelY = 700;
 	private static double ambientalLightI = 0.05;
-	private static final int NUM_REFLECTED = 5;
-	private static final int NUM_REFRACTED = 5;
+	private static final int NUM_REFLECTED = 0;
+	private static final int NUM_REFRACTED = 0;
 	private static final int NUM_ALIASING = 8;
 	private static final boolean ALIASING = false;
 	
@@ -272,6 +272,16 @@ public class Scene {
 
 		Sphere sphere5 = new Sphere(new Vector3d(23,4,18), 8, 1, new Color(0,255,0));
 		objects.add(sphere5);
+		
+		
+		
+		double angle = 250;
+		Matrix4d mat = new Matrix4d(Math.cos(angle),0,-Math.sin(angle),0,
+									0,1,0,0,
+									Math.sin(angle),0,Math.cos(angle),0,
+									2,0,4.8,0.2);
+		Model m = new Model("objects/Pistacho/pistachio.obj", "objects/Pistacho/pistachio_diff2v3.jpg", mat);
+		objects.addAll(m.createTriangles());
 	}
 	
 }
