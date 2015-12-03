@@ -27,16 +27,16 @@ public class Scene {
 	private static double distanceScreen;
 	private static Screen s;
 
-	private static final int numPixelX = 300;
-	private static final int numPixelY = 300;
-	private static double ambientalLightI = 0.1;
-	private static final int NUM_REFLECTED = 2;
-	private static final int NUM_REFRACTED = 0;
+	private static int numPixelX = 1400;
+	private static int numPixelY = 700;
+	private static double ambientalLightI = 0.05;
+	private static final int NUM_REFLECTED = 5;
+	private static final int NUM_REFRACTED = 5;
 	private static final int NUM_ALIASING = 8;
 	private static final boolean ALIASING = false;
 	
 	private static boolean SAVE_IMAGE = true;
-	private static final String NAME_IMAGE = "dinosaur2.jpg";
+	private static final String NAME_IMAGE = "scene1.jpg";
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -44,13 +44,13 @@ public class Scene {
 	
 	public static void main (String[] args) throws IOException {
 				
-		scene2();
+		scene4();
 
 		int progress = 1;
 		int currentProgress = 1;
 		boolean showProgress = false;
 		
-		for (int i=numPixelY/2; i>(-numPixelY/2); i--) {
+		for (int i=numPixelX/2; i>(-numPixelX/2); i--) {
 			
 			// Shows the render progress
 			if (showProgress) {
@@ -162,7 +162,6 @@ public class Scene {
 		objects.add(t2);
 	}
 	
-	
 	public static void scene2() {
 		ew = new Vector3d(-3.5,1.3,0);
 		c = new Camera(ew, new Vector3d(-1,0,0), 
@@ -233,4 +232,35 @@ public class Scene {
 		
 	}
 
+	public static void scene4() {
+		
+		ew = new Vector3d(30,10,30);
+		c = new Camera(ew, new Vector3d(1,0,1), 
+				new Vector3d(1,0.5,1), new Vector3d(0,0,0));
+		distanceScreen = -5;
+		s = new Screen(c, distanceScreen, numPixelX, numPixelY, 20, 10);
+		
+		Light light = new Light(new Vector3d(80,40,10));
+		Light light2 = new Light(new Vector3d(10,40,80));
+		lights.add(light);
+		lights.add(light2);
+
+		// XZ	-> Yellow
+		Plane p1 = new Plane(new Vector3d(0,0,0), new Vector3d(0,1,0), 1.0, new Color(255,255,0));
+		objects.add(p1);
+		
+		// XY	-> Pink
+		Plane p2 = new Plane(new Vector3d(0,0,0), new Vector3d(0,0,1), 1.0, new Color(255,0,255));
+		objects.add(p2);
+		
+		// YZ	-> Blue
+		Plane p3 = new Plane(new Vector3d(0,0,0), new Vector3d(1,0,0), 1.0, new Color(0,255,255));
+		objects.add(p3);
+		
+		
+		Sphere sphere1 = new Sphere(new Vector3d(15,4,8), 4, 1, new Color(0,255,0));
+		objects.add(sphere1);
+		
+	}
+	
 }
