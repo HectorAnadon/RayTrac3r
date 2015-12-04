@@ -91,30 +91,30 @@ public class Plane extends Shape{
 		return new Color((int) (i*kd*r*opaque),(int) (i*kd*g*opaque),(int) (i*kd*b*opaque));
 	}
 	
-	public Color getColor(double i, Ray l) {
+	public Color getColor(double i, Ray l, double lightI) {
 		Vector3d normal = n;
 		Double cos = Util.dotProduct(l.direction, normal)/
 				(Util.Norm(l.direction)*Util.Norm(normal));
 		if (cos > 0) {
-			return new Color((int) (cos*i*kd*r*opaque),(int) (cos*i*kd*g*opaque),(int) (cos*i*kd*b*opaque));
+			return new Color((int) (cos*i*lightI*kd*r*opaque),(int) (cos*i*lightI*kd*g*opaque),(int) (cos*i*lightI*kd*b*opaque));
 		} else {
 			normal = Util.inverse(n);
 			 cos = Util.dotProduct(l.direction, normal)/
 					(Util.Norm(l.direction)*Util.Norm(normal));
 			if (cos > 0) {
-				return new Color((int) (cos*i*kd*r*opaque),(int) (cos*i*kd*g*opaque),(int) (cos*i*kd*b*opaque));
+				return new Color((int) (cos*i*lightI*kd*r*opaque),(int) (cos*i*lightI*kd*g*opaque),(int) (cos*i*lightI*kd*b*opaque));
 			} else {
 				return new Color(0,0,0);
 			}
 		}
 	}
 	
-	public Color getColor(double i, Ray l, Ray rLight, Ray vision) {
+	public Color getColor(double i, Ray l, Ray rLight, Ray vision, double lightI) {
 		int n = 100;
 		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/
 				(Util.Norm(rLight.direction)*Util.Norm(vision.direction)), n);
 		if (cos > 0) {
-			return new Color((int) (cos*i*ks*r*opaque),(int) (cos*i*ks*g*opaque),(int) (cos*i*ks*b*opaque));
+			return new Color((int) (cos*i*lightI*ks*r*opaque),(int) (cos*i*lightI*ks*g*opaque),(int) (cos*i*lightI*ks*b*opaque));
 		} 
 		return new Color(0,0,0);
 		

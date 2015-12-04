@@ -85,11 +85,11 @@ public class RayTracer {
 				}
 				if(!intersects) {		// Calculate color without shadow
 					toIgnore.add(object);
-					Color difusa = object.getColor(r.intensity,rLight);
+					Color difusa = object.getColor(r.intensity,rLight,l.getIntensity());
 					imgColor = normalizeColor(imgColor, difusa);
 					Ray rLightReflected = object.intersection(rLight);
 					if (rLightReflected != null) {
-						Color especular = object.getColor(r.intensity,rLight,rLightReflected,r);
+						Color especular = object.getColor(r.intensity,rLight,rLightReflected,r, l.getIntensity());
 						imgColor = normalizeColor(imgColor, especular);
 						//Test especular
 						//imgColor =object.getColor(l.getIntensity(),rLight,rLightReflected,r);
@@ -101,7 +101,7 @@ public class RayTracer {
 					//imgColor =object.getColor(l.getIntensity(),rLight);
 				} else {
 					if (shadowOpacity < 1.0) {
-						Color shadow = object.getColor(r.intensity*(1-shadowOpacity),rLight);
+						Color shadow = object.getColor(r.intensity*(1-shadowOpacity),rLight, l.getIntensity());
 						imgColor = normalizeColor(imgColor, shadow);
 					}
 				}
