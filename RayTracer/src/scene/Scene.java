@@ -246,7 +246,7 @@ public class Scene {
 		lights.add(light2);
 
 		// XZ	-> Yellow
-		Plane p1 = new Plane(new Vector3d(0,0,0), new Vector3d(0,1,0), 1.0, new Color(255,255,0));
+		Plane p1 = new Plane(new Vector3d(0,0,0), new Vector3d(0,0.884769,0), 1.0, new Color(255,255,0));
 		objects.add(p1);
 		
 		// XY	-> Pink
