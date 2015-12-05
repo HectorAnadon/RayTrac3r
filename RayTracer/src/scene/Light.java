@@ -18,6 +18,10 @@ public class Light {
 		return intensity;
 	}
 
+	public void setIntensity(double i) {
+		this.intensity = i;
+	}
+	
 	public void setPosition(Vector3d position) {
 		this.position = position;
 	}

@@ -30,10 +30,10 @@ public abstract class Shape {
 	public abstract Color getColor(double i);
 
 	// Diffuse color
-	public abstract Color getColor(double i, Ray l);
+	public abstract Color getColor(double i, Ray l, double lightI);
 
 	// Specular color
-	public abstract Color getColor(double i, Ray l, Ray rLight, Ray vision);
+	public abstract Color getColor(double i, Ray l, Ray rLight, Ray vision, double lightI);
 
 	public void setKr(double kr) {
 		this.kr = kr;

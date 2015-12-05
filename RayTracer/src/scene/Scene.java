@@ -242,6 +242,7 @@ public class Scene {
 		
 		Light light = new Light(new Vector3d(80,40,10));
 		Light light2 = new Light(new Vector3d(10,40,80));
+		light2.setIntensity(0.5);
 		lights.add(light);
 		lights.add(light2);
 
