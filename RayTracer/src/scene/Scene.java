@@ -27,13 +27,13 @@ public class Scene {
 	private static double distanceScreen;
 	private static Screen s;
 
-	private static int numPixelX = 1400;
-	private static int numPixelY = 700;
+	private static int numPixelX = 800;
+	private static int numPixelY = 400;
 	private static double ambientalLightI = 0.05;
-	private static final int NUM_REFLECTED = 0;
-	private static final int NUM_REFRACTED = 0;
-	private static final int NUM_ALIASING = 8;
-	private static final boolean ALIASING = false;
+	private static final int NUM_REFLECTED = 5;
+	private static final int NUM_REFRACTED = 5;
+	private static final int NUM_ALIASING = 5;
+	private static final boolean ALIASING = true;
 	
 	private static boolean SAVE_IMAGE = true;
 	private static final String NAME_IMAGE = "scene1.jpg";
@@ -241,8 +241,9 @@ public class Scene {
 		s = new Screen(c, distanceScreen, numPixelX, numPixelY, 20, 10);
 		
 		Light light = new Light(new Vector3d(80,40,10));
-		Light light2 = new Light(new Vector3d(10,40,80));
-		light2.setIntensity(0.5);
+		Light light2 = new Light(new Vector3d(40,40,80));
+		light.setIntensity(0.9);
+		light2.setIntensity(0.4);
 		lights.add(light);
 		lights.add(light2);
 
@@ -259,21 +260,29 @@ public class Scene {
 		objects.add(p3);
 		
 
-		Sphere sphere1 = new Sphere(new Vector3d(15,4,8), 8, 1, new Color(0,255,0));
-		objects.add(sphere1);
-
-		Sphere sphere2 = new Sphere(new Vector3d(23,4,8), 8, 1, new Color(0,255,0));
+		Sphere sphere2 = new Sphere(new Vector3d(18,15,8), 14, 1, new Color(0,255,0));
+		sphere2.setKr(1);
 		objects.add(sphere2);
 
 		Sphere sphere3 = new Sphere(new Vector3d(30,4,8), 8, 1, new Color(0,255,0));
 		objects.add(sphere3);
 		
-		Sphere sphere4 = new Sphere(new Vector3d(15,4,18), 8, 1, new Color(0,255,0));
+		Sphere sphere4 = new Sphere(new Vector3d(15,4,18), 8, 1, new Color(255,0,0));
+		sphere4.setKs(0);
 		objects.add(sphere4);
 
 		Sphere sphere5 = new Sphere(new Vector3d(23,4,18), 8, 1, new Color(0,255,0));
+		sphere5.setKn(1.3);
+		sphere5.setOpaque(0.5);
 		objects.add(sphere5);
 		
+		
+		Triangle t1 = new Triangle(new Vector3d(2,20,25),new Vector3d(25,20,2),new Vector3d(10,22,30),1, new Color(200,0,0));
+		Triangle t2 = new Triangle(new Vector3d(10,22,30),new Vector3d(30,22,10),new Vector3d(25,20,2),1, new Color(200,0,0));
+		t1.setKr(1);
+		t2.setKr(1);
+		objects.add(t1);
+		objects.add(t2);
 		
 		
 		double angle = 250;
