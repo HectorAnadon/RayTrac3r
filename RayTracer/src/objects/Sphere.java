@@ -10,11 +10,20 @@ import javax.vecmath.Vector4d;
 import scene.Ray;
 import scene.Util;
 
+/**
+ *Sphere Shape
+ */
 public class Sphere extends Shape{
 	
 	private Vector3d c;
 	private double rad;
 	
+	/**
+	 * @param c	Center
+	 * @param rad	Radius
+	 * @param opaque	Opacity
+	 * @param color	Color
+	 */
 	public Sphere(Vector3d c, double rad, double opaque, Color color) {
 		this.c = c;
 		this.rad = rad;
@@ -24,6 +33,10 @@ public class Sphere extends Shape{
 		b = color.getBlue();
 	}
 	
+	/**
+	 * Transform the Sphere with the transformation matrix
+	 * @param trans	Transformation matrix
+	 */
 	public void transformation (Matrix4d trans) {
 		Vector4d p1Prov = new Vector4d(c.x, c.y, c.z, 1);
 		p1Prov = Util.MultiplyVectorAndMatrix(trans, p1Prov);
@@ -31,7 +44,10 @@ public class Sphere extends Shape{
 		//modify r?
 	}
 	
-	//Returns the reflected ray or null if does not intersect
+	/**
+	 * @param ray Incoming ray
+	 * @return Return the reflected ray or null if does not intersect
+	 */
 	public Ray intersection (Ray ray) {
 		
 		double A = Util.dotProduct(ray.direction, ray.direction);
@@ -39,11 +55,6 @@ public class Sphere extends Shape{
 		double C = Util.dotProduct(Util.substract(ray.position, c), Util.substract(ray.position, c)) - rad;
 		
 		double D = B*B - A*C;
-
-		/*System.out.println("A  " + A);
-		System.out.println("B  " + B);
-		System.out.println("C  " + C);
-		System.out.println("D  " + C);*/
 		
 		if (D < 0) {		// No intersection
 			return null;
@@ -57,13 +68,8 @@ public class Sphere extends Shape{
 			double lambda1 = (-2*B + Math.sqrt(4*B*B - 4*A*C))/(2*A);
 			double lambda2 = (-2*B - Math.sqrt(4*B*B - 4*A*C))/(2*A);
 			
-			//System.out.println("Lambdas:   " + lambda1 + "  " + lambda2);
-			
 			Vector3d pixel1 = ray.getPoint(lambda1);
 			Vector3d pixel2 = ray.getPoint(lambda2);
-			
-			//System.out.println("Esfera1 -> " + pixel1);
-			//System.out.println("Esfera2 -> " + pixel2);
 			
 			if (lambda1 < 0 && lambda2 < 0) {	// Out of view
 				return null;
@@ -88,6 +94,11 @@ public class Sphere extends Shape{
 		
 	}
 	
+	/**
+	 * @param ray Incoming ray
+	 * @param intersection Intersection point
+	 * @return Return the refracted ray
+	 */
 	public Ray getRefraction (Ray ray, Vector3d intersection) {
 		Vector3d normal = Util.substract(intersection, c);
 		Vector3d dir = new Vector3d(ray.direction);
@@ -107,24 +118,47 @@ public class Sphere extends Shape{
 		}
 	}
 	
+	/**
+	 * @param ray	Incoming ray
+	 * @return Refracted ray's intensity
+	 */
 	private double getRefractedIntensity(Ray ray) {
 		return (ray.intensity*(1-opaque));
 	}
 	
+	/**
+	 * @param ray	Incoming ray
+	 * @return reflected ray's intensity
+	 */
 	private double getIntensity(Ray ray) {
 		return (ray.intensity*kr);
 	}
 
+	/**
+	 * @param ray	Incoming ray
+	 * @param intersection	Intersection point
+	 * @return	Normal
+	 */
 	private Vector3d direction(Ray ray, Vector3d intersection) {
 		Vector3d n = Util.substract(intersection, c);
 		double escalar = 2*Util.dotProduct(ray.direction, n);
 		return Util.substract(ray.direction, Util.dotScalar(n, escalar));
 	}
 
+	/**
+	 * @param double	Intensity
+	 * @return Ambiental color
+	 */
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*r*opaque),(int) (i*kd*g*opaque),(int) (i*kd*b*opaque));
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @param l	Incoming ray
+	 * @param lightI	Light's intensity
+	 * @return Difusse color
+	 */
 	public Color getColor(double i, Ray l, double lightI) {
 		Vector3d n = Util.substract(l.position, c);
 		Double cos = Util.dotProduct(l.direction, n)/
@@ -137,6 +171,14 @@ public class Sphere extends Shape{
 		
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @param l	Incoming ray
+	 * @param rLight	Ray form the light
+	 * @param vision	Incoming ray
+	 * @param lightI	Light's intensity
+	 * @return Specular color
+	 */
 	public Color getColor(double i, Ray l, Ray rLight, Ray vision, double lightI) {
 		Vector3d normal = Util.substract(l.position, c);
 		Double cosLight = Util.dotProduct(l.direction, normal)/

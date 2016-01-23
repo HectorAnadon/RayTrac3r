@@ -10,11 +10,20 @@ import javax.vecmath.Vector4d;
 import scene.Ray;
 import scene.Util;
 
+/**
+ * Plane Shape
+ */
 public class Plane extends Shape{
 	
 	private Vector3d p1;
 	private Vector3d n;
 	
+	/**
+	 * @param p1	Point in the plane
+	 * @param n	Plane's normal
+	 * @param opaque	Opacity
+	 * @param c	Color
+	 */
 	public Plane(Vector3d p1, Vector3d n, double opaque, Color c) {
 		this.p1 = p1;
 		this.n = n;
@@ -26,6 +35,10 @@ public class Plane extends Shape{
 		kr = 0;
 	}
 	
+	/**
+	 * Transform the Plane with the transformation matrix
+	 * @param trans	Transformation matrix
+	 */
 	public void transformation (Matrix4d trans) {
 		Vector4d p1Prov = new Vector4d(p1.x, p1.y, p1.z, 1);
 		p1Prov = Util.MultiplyVectorAndMatrix(trans, p1Prov);
@@ -35,7 +48,10 @@ public class Plane extends Shape{
 		n = new Vector3d(nProv.x/nProv.w, nProv.y/nProv.w,nProv.z/nProv.w);
 	}
 	
-	//Returns the reflected ray or null if does not intersect
+	/**
+	 * @param ray Incoming ray
+	 * @return Return the reflected ray or null if does not intersect
+	 */
 	public Ray intersection (Ray ray) {
 		Vector3d normal = n;
 		double dn = Util.dotProduct(ray.direction, normal);
@@ -60,6 +76,11 @@ public class Plane extends Shape{
 		}
 	}
 	
+	/**
+	 * @param ray Incoming ray
+	 * @param intersection Intersection point
+	 * @return Return the refracted ray
+	 */
 	public Ray getRefraction (Ray ray, Vector3d intersection) {
 		Vector3d normal = new Vector3d(n);
 		Vector3d dir = new Vector3d(ray.direction);
@@ -79,18 +100,36 @@ public class Plane extends Shape{
 		}
 	}
 	
+	/**
+	 * @param ray	Incoming ray
+	 * @return Refracted ray's intensity
+	 */
 	private double getRefractedIntensity(Ray ray) {
 		return (ray.intensity*(1-opaque));
 	}
 	
+	/**
+	 * @param ray	Incoming ray
+	 * @return reflected ray's intensity
+	 */
 	private double getIntensity(Ray ray) {
 		return (ray.intensity*kr);
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @return Ambiental color
+	 */
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*r*opaque),(int) (i*kd*g*opaque),(int) (i*kd*b*opaque));
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @param l	Incoming ray
+	 * @param lightI	Light's intensity
+	 * @return Difusse color
+	 */
 	public Color getColor(double i, Ray l, double lightI) {
 		Vector3d normal = n;
 		Double cos = Util.dotProduct(l.direction, normal)/
@@ -109,6 +148,14 @@ public class Plane extends Shape{
 		}
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @param l	Incoming ray
+	 * @param rLight	Ray form the light
+	 * @param vision	Incoming ray
+	 * @param lightI	Light's intensity
+	 * @return Specular color
+	 */
 	public Color getColor(double i, Ray l, Ray rLight, Ray vision, double lightI) {
 		int n = 100;
 		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/

@@ -13,6 +13,11 @@ import javax.vecmath.Matrix4d;
 import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
 
+
+/**
+ * Represent a complex object formed by triangles and optionally textures 
+ */
+
 public class Model {
 
 	private ArrayList<Shape> triangles;
@@ -24,12 +29,17 @@ public class Model {
 	private boolean isTextures;
 	
 	private double kr = 0;		// reflection coefficient
-	private double kn = 1;		// Refraction coefficient
+	private double kn = 1;		// refraction coefficient
 	private double opaque = 1.0;
 	
 	private Color color = new Color(255,255,255);
 	private String imgPath;
 
+	/**
+	 * Creates a new Model
+	 * @param imgPath Triangles
+	 * @param texturesPath	Textures
+	 */
 	public Model(String imgPath, String texturesPath) {
 
 		triangles = new ArrayList<Shape>();
@@ -49,9 +59,14 @@ public class Model {
 			numPixelsY = textures.getHeight();
 		}
 
-//		createTriangles(imgPath);
 	}
 	
+	/**
+	 * Creates a new Model modified with the transformation matrix
+	 * @param imgPath	Triangles
+	 * @param texturesPath	Textures
+	 * @param transformation	Transformation matrix
+	 */
 	public Model(String imgPath, String texturesPath, Matrix4d transformation) {
 
 		triangles = new ArrayList<Shape>();
@@ -72,13 +87,18 @@ public class Model {
 			}
 		}
 
-//		createTriangles(imgPath);
 	}
-
+	
+	/**
+	 * @return triangles
+	 */
 	public ArrayList<Shape> getTriangles() {
 		return triangles;
 	}
 
+	/**
+	 * @return ArrayList with triangles who compose the image
+	 */
 	public ArrayList<Shape> createTriangles() {
 		Scanner s;
 		try {
@@ -197,13 +217,19 @@ public class Model {
 		return triangles;
 	}
 	
-	
+	/**
+	 * @param c1	Color1
+	 * @param c2	Color2
+	 * @param c3	Color3
+	 * @return	Average Color between the parameters
+	 */
 	private Color getMeanColor(Color c1, Color c2, Color c3) {
 		return new Color((c1.getRed()+c2.getRed()+c3.getRed())/3,(c1.getGreen()+c2.getGreen()+c3.getGreen())/3, (c1.getBlue()+c2.getBlue()+c3.getBlue())/3);
 	}
 
 	/**
-	 * Gets the color for the specified texture data 'x'
+	 * @param x	Texture's number
+	 * @return	The color for the specified texture data 'x'
 	 */
 	private Color getTextureColor(int x) {
 
@@ -219,15 +245,23 @@ public class Model {
 		return new Color(r, g, b);
 	}
 
-
+	/**
+	 * @param kr Reflection coefficient 
+	 */
 	public void setKr(double kr) {
 		this.kr = kr;
 	}
 
+	/**
+	 * @param kn	Material coefficient
+	 */
 	public void setKn(double kn) {
 		this.kn = kn;
 	}
 
+	/**
+	 * @param color	Color
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}

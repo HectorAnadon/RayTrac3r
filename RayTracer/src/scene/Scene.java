@@ -44,7 +44,7 @@ public class Scene {
 	
 	public static void main (String[] args) throws IOException {
 				
-		scene4();
+		scene1();
 
 		int progress = 1;
 		int currentProgress = 1;

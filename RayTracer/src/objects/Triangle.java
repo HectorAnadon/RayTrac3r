@@ -11,6 +11,9 @@ import javax.vecmath.Vector4d;
 import scene.Ray;
 import scene.Util;
 
+/**
+ * Triangle Shape
+ */
 public class Triangle extends Shape{
 	
 	private Vector3d p1;
@@ -18,6 +21,13 @@ public class Triangle extends Shape{
 	private Vector3d p3;
 	private Vector3d n;
 	
+	/**
+	 * @param p1	Point 1
+	 * @param p2	Point 2
+	 * @param p3	Point 3
+	 * @param opaque	Opacity
+	 * @param c	Color
+	 */
 	public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, double opaque, Color c) {
 		this.p1 = p1;
 		this.p2 = p2;
@@ -27,9 +37,12 @@ public class Triangle extends Shape{
 		g = c.getGreen();
 		b = c.getBlue();
 		n = Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1));
-//		System.out.println("normal " +n);
 	}
 	
+	/**
+	 * Transform the Plane with the transformation matrix
+	 * @param trans	Transformation matrix
+	 */
 	public void transformation (Matrix4d trans) {
 		Vector4d p1Prov = new Vector4d(p1.x, p1.y, p1.z, 1);
 		p1Prov = Util.MultiplyVectorAndMatrix(trans, p1Prov);
@@ -43,7 +56,10 @@ public class Triangle extends Shape{
 		n = Util.vectorialProduct(Util.substract(p2,p1), Util.substract(p3,p1));
 	}
 	
-	//Returns the reflected ray or null if does not intersect
+	/**
+	 * @param ray Incoming ray
+	 * @return Return the reflected ray or null if does not intersect
+	 */
 	public Ray intersection (Ray ray) {
 		Vector3d normal = new Vector3d(n);
 		double dn = Util.dotProduct(ray.direction, normal);
@@ -69,6 +85,11 @@ public class Triangle extends Shape{
 		}
 	}
 	
+	/**
+	 * @param ray Incoming ray
+	 * @param intersection Intersection point
+	 * @return Return the refracted ray
+	 */
 	public Ray getRefraction (Ray ray, Vector3d intersection) {
 		Vector3d normal = new Vector3d(n);
 		Vector3d dir = new Vector3d(ray.direction);
@@ -88,15 +109,26 @@ public class Triangle extends Shape{
 		}
 	}
 	
+	/**
+	 * @param ray	Incoming ray
+	 * @return Refracted ray's intensity
+	 */
 	private double getRefractedIntensity(Ray ray) {
 		return (ray.intensity*(1-opaque));
 	}
 
+	/**
+	 * @param ray	Incoming ray
+	 * @return reflected ray's intensity
+	 */
 	private double getIntensity(Ray ray) {
 		return (ray.intensity*kr);
 	}
 
-
+	/**
+	 * @param intersection Intersection point
+	 * @return	True if the Triangle contains the intersection point
+	 */
 	public boolean contains(Vector3d intersection) {
 		double s1 = Util.dotProduct(Util.vectorialProduct(Util.substract(p2, p1), Util.substract(intersection, p1)), n);
 		double s2 = Util.dotProduct(Util.vectorialProduct(Util.substract(p3, p2), Util.substract(intersection, p2)), n);
@@ -110,20 +142,39 @@ public class Triangle extends Shape{
 		}
 	}
 	
+	/**
+	 * @return point 1
+	 */
 	public Vector3d getP1() {
 		return p1;
 	}
+	/**
+	 * @return point 2
+	 */
 	public Vector3d getP2() {
 		return p2;
 	}
+	/**
+	 * @return point 3
+	 */
 	public Vector3d getP3() {
 		return p3;
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @return Ambiental color
+	 */
 	public Color getColor(double i) {
 		return new Color((int) (i*kd*r*opaque),(int) (i*kd*g*opaque),(int) (i*kd*b*opaque));
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @param l	Incoming ray
+	 * @param lightI	Light's intensity
+	 * @return Difusse color
+	 */
 	public Color getColor(double i, Ray l, double lightI) {
 		Double cos = Util.dotProduct(l.direction, n)/
 				(Util.Norm(l.direction)*Util.Norm(n));
@@ -140,6 +191,14 @@ public class Triangle extends Shape{
 		}
 	}
 	
+	/**
+	 * @param double	Intensity
+	 * @param l	Incoming ray
+	 * @param rLight	Ray form the light
+	 * @param vision	Incoming ray
+	 * @param lightI	Light's intensity
+	 * @return Specular color
+	 */
 	public Color getColor(double i, Ray l, Ray rLight, Ray vision, double lightI) {
 		int n = 150;
 		Double cos = Math.pow(Util.dotProduct(rLight.direction, vision.direction)/

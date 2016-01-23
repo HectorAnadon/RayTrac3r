@@ -78,7 +78,7 @@ public class RayTracer {
 							*/
 							intersects = true;
 							if (obj2.opaque > shadowOpacity) {
-								shadowOpacity = obj2.opaque;
+								shadowOpacity += obj2.opaque;
 							}
 						}
 					}
