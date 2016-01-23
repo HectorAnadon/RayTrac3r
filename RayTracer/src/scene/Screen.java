@@ -5,6 +5,11 @@ import java.util.Random;
 
 import javax.vecmath.*;
 
+/**
+ * 
+ * Screen object
+ *
+ */
 public class Screen {
 
 	private Camera c;
@@ -16,6 +21,15 @@ public class Screen {
 
 	private static double Au, Av;
 
+	/**
+	 * 
+	 * @param c Camera object
+	 * @param distance Distance for camera
+	 * @param numRow Number of rows
+	 * @param numCol Number of columns
+	 * @param height Height
+	 * @param width Width
+	 */
 	public Screen(Camera c, double distance, int numRow, int numCol, double height, double width) {
 		this.c = c;
 		this.distance = distance;
@@ -35,7 +49,10 @@ public class Screen {
 	}
 
 	/**
-	 * Gets the world coordinates from the pixel position in the screen
+	 * 
+	 * @param x position
+	 * @param y position
+	 * @return Gets the world coordinates from the pixel position in the screen
 	 */
 	public static ArrayList<Vector4d> getWorldScreenCoordinates(int x, int y) {
 		//System.out.println("(" + x + "," + y + ")");
@@ -52,7 +69,13 @@ public class Screen {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @param x position
+	 * @param y position
+	 * @param num antialiasing
+	 * @return Gets the world coordinates from the pixel position in the screen with antialising num
+	 */
 	public static ArrayList<Vector4d> getWorldScreenCoordinatesAntiAliasing(int x, int y, int num) {
 		ArrayList<Vector4d> points = new ArrayList<Vector4d>();
 		

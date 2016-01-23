@@ -7,8 +7,18 @@ import javax.vecmath.Vector3d;
 
 import objects.Shape;
 
+/**
+ * RayTracer object
+ *
+ */
 public class RayTracer {
 	
+	/**
+	 * 
+	 * @param imgColor previous color
+	 * @param provColor new color
+	 * @return A normalized Color adding imgColor and provColor
+	 */
 	private static Color normalizeColor(Color imgColor, Color provColor) {
 		int r = imgColor.getRed() + provColor.getRed();
 		int g = imgColor.getGreen() + provColor.getGreen();
@@ -22,7 +32,19 @@ public class RayTracer {
 		return new Color(r,g,b);
 	}
 	
-	
+	/**
+	 * 
+	 * @param r Ray
+	 * @param objects Objects in the scene
+	 * @param lights Lights in the scene
+	 * @param ambientalLightI Intensity of ambientalLight
+	 * @param ew Camera position
+	 * @param raysReflectedReaming Rays remaining for reflection
+	 * @param raysRefractedReaming Rays remaining for refraction
+	 * @param maxReflected Maximum rays reflected
+	 * @param toIgnore Objects you shouldn´t consider in the scene
+	 * @return A color given by r ray
+	 */
 	public static Color traceRay(Ray r,ArrayList<Shape> objects, ArrayList<Light> lights, double ambientalLightI, Vector3d ew,
 			int raysReflectedReaming, int raysRefractedReaming, int maxReflected, ArrayList<Shape> toIgnore) {
 		Shape object = null;
@@ -145,7 +167,13 @@ public class RayTracer {
 
 	}
 
-	//Is b between a and c?
+	/**
+	 * 
+	 * @param b point
+	 * @param a point
+	 * @param c point
+	 * @return True if b is between a and c
+	 */
 	private static boolean between(Vector3d b, Vector3d a, Vector3d c) {
 		if (Math.floor((Util.distance(a, b) + Util.distance(c, b))*100)/100 == Math.floor(Util.distance(a, c)*100)/100)
 		    return true;

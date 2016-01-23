@@ -18,6 +18,10 @@ import objects.Shape;
 import objects.Sphere;
 import objects.Triangle;
 
+/**
+ * Scene object
+ *
+ */
 public class Scene {
 	
 	private static ArrayList<Shape> objects = new ArrayList<Shape>();
@@ -41,7 +45,11 @@ public class Scene {
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
 	
-	
+	/**
+	 * Start the ray tracer
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main (String[] args) throws IOException {
 				
 		scene4();
@@ -114,6 +122,9 @@ public class Scene {
 		
 	}	
 	
+	/**
+	 * Triangle refraction + reflexion
+	 */
 	public static void scene1() {
 		ew = new Vector3d(-4,0,0);
 		c = new Camera(ew, new Vector3d(-1,0,0), 
@@ -162,6 +173,9 @@ public class Scene {
 		objects.add(t2);
 	}
 	
+	/**
+	 * Pistachio scene
+	 */
 	public static void scene2() {
 		ew = new Vector3d(-3.5,1.3,0);
 		c = new Camera(ew, new Vector3d(-1,0,0), 
@@ -207,6 +221,9 @@ public class Scene {
 		
 	}
 	
+	/**
+	 * Dinosour scene
+	 */
 	public static void scene3() {
 		ew = new Vector3d(-230,-5,50);
 		c = new Camera(ew, new Vector3d(-1,-0.0,-0.0), 
@@ -232,6 +249,9 @@ public class Scene {
 		
 	}
 
+	/**
+	 * Exam scene
+	 */
 	public static void scene4() {
 		
 		ew = new Vector3d(40,10,30);
