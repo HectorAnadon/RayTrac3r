@@ -31,12 +31,12 @@ public class Scene {
 	private static int numPixelY = 400;
 	private static double ambientalLightI = 0.05;
 	private static final int NUM_REFLECTED = 5;
-	private static final int NUM_REFRACTED = 5;
-	private static final int NUM_ALIASING = 5;
+	private static final int NUM_REFRACTED = 3;
+	private static final int NUM_ALIASING = 15;
 	private static final boolean ALIASING = true;
 	
 	private static boolean SAVE_IMAGE = true;
-	private static final String NAME_IMAGE = "scene1.jpg";
+	private static final String NAME_IMAGE = "buena.jpg";
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
@@ -44,7 +44,7 @@ public class Scene {
 	
 	public static void main (String[] args) throws IOException {
 				
-		scene1();
+		scene4();
 
 		int progress = 1;
 		int currentProgress = 1;
@@ -234,7 +234,7 @@ public class Scene {
 
 	public static void scene4() {
 		
-		ew = new Vector3d(30,10,30);
+		ew = new Vector3d(40,10,30);
 		c = new Camera(ew, new Vector3d(1,0,1), 
 				new Vector3d(1,0.5,1), new Vector3d(0,0,0));
 		distanceScreen = -5;
