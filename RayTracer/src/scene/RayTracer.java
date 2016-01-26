@@ -66,16 +66,11 @@ public class RayTracer {
 						 minDistance = distance; // update min distance
 						 rReflected = currentReflected;
 					 }
-					//System.out.println(i + "  -  " + j);
-					// TO DO:
-						// 1. Calculate intersection between light and intersection point
-						// 2. Calculate intersection between other objects with the reflected ray
 				}
 			}
 		}
 				
 		//Only for one object:
-		// AMBIANTAL LIGHT + DIFUSSE
 		if (object != null) {
 			//get ambiental light
 			if (raysReflectedReaming == maxReflected) {

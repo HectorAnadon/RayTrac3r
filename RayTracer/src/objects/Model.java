@@ -139,7 +139,6 @@ public class Model {
 					Vector3d p2 = new Vector3d(Double.parseDouble(x[0]), Double.parseDouble(z[0]),
 							Double.parseDouble(w[0]));
 
-					// TODO: obtener el color en función del punto de intersección del rayo con el triángulo
 						// Guardar las 3 coordenadas de color para cada triángulo
 					
 					// Gets the color from the x vertex

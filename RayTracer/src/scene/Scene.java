@@ -31,8 +31,8 @@ public class Scene {
 	private static double distanceScreen;
 	private static Screen s;
 
-	private static int numPixelX = 800;
-	private static int numPixelY = 400;
+	private static int numPixelX = 1024;
+	private static int numPixelY = 512;
 	private static double ambientalLightI = 0.05;
 	private static final int NUM_REFLECTED = 5;
 	private static final int NUM_REFRACTED = 3;
@@ -40,7 +40,7 @@ public class Scene {
 	private static final boolean ALIASING = true;
 	
 	private static boolean SAVE_IMAGE = true;
-	private static final String NAME_IMAGE = "buena.jpg";
+	private static final String NAME_IMAGE = "buenaGrande.jpg";
 	
 	
 	private static BufferedImage image = new BufferedImage(numPixelX, numPixelY, BufferedImage.TYPE_INT_RGB);
