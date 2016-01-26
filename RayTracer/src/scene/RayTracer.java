@@ -89,10 +89,6 @@ public class RayTracer {
 						//sometimes intersections it shouldnt
 						if (rReflected2 != null &&
 								(between(rReflected2.position, l.getPosition(),rReflected.position))) {
-							/*System.out.println("position object: " + rReflected.position);
-							System.out.println("position in the middle:" + rReflected2.position);
-							System.out.println("position light: "+l.getPosition());
-							*/
 							intersects = true;
 							if (obj2.opaque > shadowOpacity) {
 								shadowOpacity += obj2.opaque;
@@ -108,14 +104,7 @@ public class RayTracer {
 					if (rLightReflected != null) {
 						Color especular = object.getColor(r.intensity,rLight,rLightReflected,r, l.getIntensity());
 						imgColor = normalizeColor(imgColor, especular);
-						//Test especular
-						//imgColor =object.getColor(l.getIntensity(),rLight,rLightReflected,r);
-					} else{
-						//Test especular
-						//imgColor = new Color(0,0,0);
 					}
-					//Test difuso
-					//imgColor =object.getColor(l.getIntensity(),rLight);
 				} else {
 					if (shadowOpacity < 1.0) {
 						Color shadow = object.getColor(r.intensity*(1-shadowOpacity),rLight, l.getIntensity());
@@ -140,7 +129,6 @@ public class RayTracer {
 			
 			// Color reflected
 			if (raysReflectedReaming > 0 && object.kr > 0) {
-//				reflectedColor = traceRay(rReflected, raysReaming - 1);
 				rReflected.inverseDirection();
 				reflectedColor = traceRay(new Ray(rReflected.position, rReflected.direction,rReflected.intensity), 
 						objects, lights, ambientalLightI, ew, raysReflectedReaming - 1, 

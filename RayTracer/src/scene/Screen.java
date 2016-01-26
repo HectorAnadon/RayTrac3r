@@ -55,16 +55,12 @@ public class Screen {
 	 * @return Gets the world coordinates from the pixel position in the screen
 	 */
 	public static ArrayList<Vector4d> getWorldScreenCoordinates(int x, int y) {
-		//System.out.println("(" + x + "," + y + ")");
 		Vector3d Pc = new Vector3d(x, y, -distance);
 		Util.multiplyVectors(Pc, new Vector3d(Au, Av, 1));
-		//System.out.println("Pc   " + Pc);
 
 		Vector4d Pw = new Vector4d(Pc.x, Pc.y, Pc.z, 1);
 		ArrayList<Vector4d> points = new ArrayList<Vector4d>();
-		//System.out.println(M);
 		points.add(Util.MultiplyVectorAndMatrix(M, Pw));
-		//System.out.println("Pw   " + Util.MultiplyVectorAndMatrix(M, Pw));
 		return points;
 	}
 	

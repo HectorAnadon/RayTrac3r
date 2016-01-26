@@ -60,7 +60,6 @@ public class Sphere extends Shape{
 			return null;
 		}
 		else if (D == 0) {	// One intersection
-			//Intersection point?
 			return ray;
 		}
 		else {				// Two intersections
