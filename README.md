@@ -12,4 +12,4 @@ To improve the final result, the scene is rendered applying anti-aliasing.
 These images are an example of the result obtained with this program:
 
 ![Dinosaur](images/dinosaur2.jpg) 
-![Complete scene](images/complete_scene.jpg) 
+![Complete scene](images/complete_scene.png) 
